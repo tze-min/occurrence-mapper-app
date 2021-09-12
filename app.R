@@ -1,13 +1,20 @@
-# libraries
 if(!require(dplyr)) install.packages("dplyr", repos = "http://cran.us.r-project.org")
 if(!require(readxl)) install.packages("readxl", repos = "http://cran.us.r-project.org")
+if(!require(readr)) install.packages("readr", repos = "http://cran.us.r-project.org")
+if(!require(tidyr)) install.packages("tidyr", repos = "http://cran.us.r-project.org")
 if(!require(shiny)) install.packages("shiny", repos = "http://cran.us.r-project.org")
 if(!require(shinyWidgets)) install.packages("shinyWidgets", repos = "http://cran.us.r-project.org")
 if(!require(shinydashboard)) install.packages("shinydashboard", repos = "http://cran.us.r-project.org")
 if(!require(leaflet)) install.packages("leaflet", repos = "http://cran.us.r-project.org")
+if(!require(rgdal)) install.packages("rgdal", repos = "http://cran.us.r-project.org")
+if(!require(sf)) install.packages("sf", repos = "http://cran.us.r-project.org")
+if(!require(vroom)) install.packages("vroom", repos = "http://cran.us.r-project.org")
+if(!require(htmltools)) install.packages("htmltools", repos = "http://cran.us.r-project.org")
+if(!require(vegan)) install.packages("vegan", repos = "http://cran.us.r-project.org")
 
-library(dplyr)
 library(readxl)
+library(readr)
+library(tidyr)
 library(rgdal)      
 library(sf)
 library(shiny) 
@@ -23,6 +30,7 @@ header <- dashboardHeader(
 sidebar <- dashboardSidebar(
     sidebarMenu(
         menuItem("Data", tabName = "dataset"),
+        menuItem("Statistics", tabName = "statistics"),
         menuItem("Map", tabName = "map"),
         menuItem("Selection", tabName = "selection"),
         
@@ -48,14 +56,23 @@ body <- dashboardBody(
                     box(width = 12, solidHeader = TRUE, status = "primary", title = "Dataset",
                         column(width = 12,
                                DT::dataTableOutput("fulldata"),
-                               style = "height:520px; overflow-y: scroll; overflow-x: scroll;")) 
+                               style = "height: 520px; overflow-y: scroll; overflow-x: scroll;")) 
                 )),
+        
+        # add content of second tab: summary statistics and/or species discovery curve
+        tabItem(
+            tabName = "statistics",
+            fluidRow(
+                box(title = "Species Discovery Curve", status = "primary", solidHeader = TRUE, width = 12,
+                    plotOutput("sdc", height = 500))
+            )
+        ),
         
         tabItem(
             tabName = "map",
             fluidRow(
                 box(width = NULL, solidHeader = TRUE, status = "primary", title = "Occurrence Map",
-                    leafletOutput("speciesmap", height = 520))
+                    leafletOutput("occmap", height = 520))
             )
         ),
         
@@ -64,8 +81,8 @@ body <- dashboardBody(
                 fluidRow(
                     box(width = 12, solidHeader = TRUE, status = "primary", title = "Selected Points",
                         column(width = 12,
-                               DT::dataTableOutput("selectedpoints"),
-                               style = "height:520px; overflow-y: scroll; overflow-x: scroll;"))
+                               DT::DTOutput("selectedpoints"),
+                               style = "height: 520px; overflow-y: scroll; overflow-x: scroll;"))
                 ))
     )
 )
@@ -85,15 +102,54 @@ server <- function(input, output, session) {
         
         ext <- tools::file_ext(input$upload$name)
         switch(ext,
-               csv = vroom::vroom(input$upload$datapath, delim = ","),
+               csv = vroom::vroom(input$upload$datapath, delim = ",", col_types = list(
+                   id = "c",
+                   sciname = "c",
+                   genus = "c",
+                   family = "c",
+                   order = "c",
+                   recorder = "c",
+                   date = "?",
+                   latitude = "?",
+                   longitude = "?"
+               )),
                validate("Invalid file type. Please upload a .csv file.")
         ) %>% dplyr::mutate(popup_text = paste("<i>", sciname, "</i><br/>",
-                                               collectdate, "<br/>",
-                                               "by", collectors, "<br/>",
+                                               date, "<br/>",
+                                               "by", recorder, "<br/>",
                                                id))
     })
     
-    output$fulldata <- DT::renderDataTable({
+    # popup <- reactive({
+    #     data() %>% dplyr::mutate(popup_text = paste("<i>", sciname, "</i><br/>",
+    #                                                 date, "<br/>",
+    #                                                 "by", recorder, "<br/>",
+    #                                                 id))
+    # })
+    
+    output$sdc <- renderPlot({
+        df <- data()
+        com <- data.frame(df$sciname)
+        com$obs <- row.names(df)
+        colnames(com) <- c("sp", "obs")
+        
+        com2 <- com %>%
+            pivot_longer(cols = -obs) %>%
+            group_by(obs, value) %>%
+            summarise(N=n()) %>%
+            pivot_wider(names_from = value, values_from = N) %>%
+            replace(is.na(.), 0)
+        
+        com2$obs <- as.numeric(com$obs)
+        
+        curve <- vegan::specaccum(com2)
+        plot(curve, ci.type="poly", col="blue", lwd=2, ci.lty=0, ci.col="lightblue",
+             xlab="Number of Observations",
+             ylab="Number of Species",
+             main="Species Discovery Curve")
+    })
+    
+    output$fulldata <- DT::renderDT({
         data()
     })
     
@@ -104,23 +160,23 @@ server <- function(input, output, session) {
     
     observeEvent(input$upload, {
         shinyWidgets::updatePickerInput(session, inputId = "order_select", label = "Order",
-                                        choices = c("", ordernames()),
+                                        choices = c(ordernames()),
                                         options = pickerOptions(liveSearch = TRUE))
         shinyWidgets::updatePickerInput(session, inputId = "family_select", label = "Family",
-                                        choices = c("", familynames()),
+                                        choices = c(familynames()),
                                         options = pickerOptions(liveSearch = TRUE))
         shinyWidgets::updatePickerInput(session, inputId = "genus_select", label = "Genus",
-                                        choices = c("", genusnames()),
+                                        choices = c(genusnames()),
                                         options = pickerOptions(liveSearch = TRUE))
         shinyWidgets::updatePickerInput(session, inputId = "species_select", label = "Species",
-                                        choices = c("", speciesnames()),
+                                        choices = c(speciesnames()),
                                         options = pickerOptions(liveSearch = TRUE))
     })
     
     observeEvent(input$order_select, {
         df <- data() %>% dplyr::filter(order == input$order_select)
         
-        output$speciesmap <- renderLeaflet({
+        output$occmap <- renderLeaflet({
             if (is.null(data())) {
                 lf <-
                     leaflet() %>% 
@@ -153,7 +209,7 @@ server <- function(input, output, session) {
     observeEvent(input$family_select, {
         df <- data() %>% dplyr::filter(family == input$family_select)
         
-        output$speciesmap <- renderLeaflet({
+        output$occmap <- renderLeaflet({
             if (is.null(data())) {
                 lf <-
                     leaflet() %>% 
@@ -186,7 +242,7 @@ server <- function(input, output, session) {
     observeEvent(input$genus_select, {
         df <- data() %>% dplyr::filter(genus == input$genus_select)
         
-        output$speciesmap <- renderLeaflet({
+        output$occmap <- renderLeaflet({
             if (is.null(data())) {
                 lf <-
                     leaflet() %>% 
@@ -219,7 +275,7 @@ server <- function(input, output, session) {
     observeEvent(input$species_select, {
         df <- data() %>% dplyr::filter(sciname == input$species_select)
         
-        output$speciesmap <- renderLeaflet({
+        output$occmap <- renderLeaflet({
             if (is.null(data())) {
                 lf <-
                     leaflet() %>% 
@@ -251,11 +307,11 @@ server <- function(input, output, session) {
     
     # map's points change to show only selected species
     observeEvent(input$order_select, {
-        leafletProxy("speciesmap") %>% clearMarkers()
+        leafletProxy("occmap") %>% clearMarkers()
         df <- data() %>% dplyr::filter(order == input$order_select)
         index <- which(df$order == input$order_select)
         
-        leafletProxy("speciesmap") %>%
+        leafletProxy("occmap") %>%
             addCircleMarkers(data = df,
                              lng = df$longitude[index], lat = df$latitude[index],
                              label = lapply(df$popup_text[index], htmltools::HTML),
@@ -275,11 +331,11 @@ server <- function(input, output, session) {
     })
     
     observeEvent(input$family_select, {
-        leafletProxy("speciesmap") %>% clearMarkers()
+        leafletProxy("occmap") %>% clearMarkers()
         df <- data() %>% dplyr::filter(family == input$family_select)
         index <- which(df$family == input$family_select)
         
-        leafletProxy("speciesmap") %>%
+        leafletProxy("occmap") %>%
             addCircleMarkers(data = df,
                              lng = df$longitude[index], lat = df$latitude[index],
                              label = lapply(df$popup_text[index], htmltools::HTML),
@@ -299,11 +355,11 @@ server <- function(input, output, session) {
     })
     
     observeEvent(input$genus_select, {
-        leafletProxy("speciesmap") %>% clearMarkers()
+        leafletProxy("occmap") %>% clearMarkers()
         df <- data() %>% dplyr::filter(genus == input$genus_select)
         index <- which(df$genus == input$genus_select)
         
-        leafletProxy("speciesmap") %>%
+        leafletProxy("occmap") %>%
             addCircleMarkers(data = df,
                              lng = df$longitude[index], lat = df$latitude[index],
                              label = lapply(df$popup_text[index], htmltools::HTML),
@@ -323,11 +379,11 @@ server <- function(input, output, session) {
     })
     
     observeEvent(input$species_select, {
-        leafletProxy("speciesmap") %>% clearMarkers()
+        leafletProxy("occmap") %>% clearMarkers()
         df <- data() %>% dplyr::filter(sciname == input$species_select)
         index <- which(df$sciname == input$species_select)
         
-        leafletProxy("speciesmap") %>%
+        leafletProxy("occmap") %>%
             addCircleMarkers(data = df,
                              lng = df$longitude[index], lat = df$latitude[index],
                              label = lapply(df$popup_text[index], htmltools::HTML),
@@ -350,10 +406,10 @@ server <- function(input, output, session) {
     
     # map's point change color to red when selected (clicked) and back to black when deselected
     selected <- reactiveValues(groups = vector())
-    proxy <- leafletProxy("speciesmap")
+    proxy <- leafletProxy("occmap")
     
-    observeEvent(input$speciesmap_marker_click, {
-        click <- input$speciesmap_marker_click
+    observeEvent(input$occmap_marker_click, {
+        click <- input$occmap_marker_click
         if(click$group == "unselected") {
             selected$groups <- c(selected$groups, click$id)
             proxy %>% showGroup(group = click$id)
@@ -364,7 +420,7 @@ server <- function(input, output, session) {
     })
     
     # display and download csv of selected points
-    output$selectedpoints <- DT::renderDataTable({
+    output$selectedpoints <- DT::renderDT({
         DT::datatable(
             if(is.null(selected)) {
                 data(NULL)
