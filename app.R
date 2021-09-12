@@ -1,3 +1,4 @@
+# import libraries
 if(!require(dplyr)) install.packages("dplyr", repos = "http://cran.us.r-project.org")
 if(!require(readxl)) install.packages("readxl", repos = "http://cran.us.r-project.org")
 if(!require(readr)) install.packages("readr", repos = "http://cran.us.r-project.org")
@@ -22,21 +23,27 @@ library(rgdal)
 library(sf)
 library(vegan)
 
-# dashboard app
+
+# UI ----------------------------------------------------------------------------------
+
 header <- dashboardHeader(
     title = "Occurrence Mapper"
 )
 
 sidebar <- dashboardSidebar(
     sidebarMenu(
+        
+        # navigation menu
         menuItem("Data", tabName = "dataset"),
         menuItem("Statistics", tabName = "statistics"),
         menuItem("Map", tabName = "map"),
         menuItem("Selection", tabName = "selection"),
         
+        # styled download button
         tags$style(".skin-blue .sidebar .shiny-download-link { color: #444; }"),
         fileInput("upload", NULL, accept = c(".csv")),
         
+        # pickers
         shinyWidgets::pickerInput(
             "order_select", label = "Order", choices = ""),
         shinyWidgets::pickerInput(
@@ -51,6 +58,7 @@ sidebar <- dashboardSidebar(
 body <- dashboardBody(
     tabItems(
         
+        # first tab's content: unedited datatable
         tabItem(tabName = "dataset",
                 fluidRow(
                     box(width = 12, solidHeader = TRUE, status = "primary", title = "Dataset",
@@ -59,7 +67,7 @@ body <- dashboardBody(
                                style = "height: 520px; overflow-y: scroll; overflow-x: scroll;")) 
                 )),
         
-        # add content of second tab: summary statistics and/or species discovery curve
+        # second tab's content: species discovery curve
         tabItem(
             tabName = "statistics",
             fluidRow(
@@ -68,11 +76,13 @@ body <- dashboardBody(
             )
         ),
         
+        # third tab's content: interactive map
         tabItem(
             tabName = "map",
             uiOutput("rendermap")
         ),
         
+        # fourth tab's content: datatable of selected points
         tabItem(tabName = "selection",
                 downloadButton("downloaddata", "Download Selection"),
                 fluidRow(
@@ -91,16 +101,18 @@ ui <- dashboardPage(
 )
 
 
+# SERVER ----------------------------------------------------------------------------------
 
 server <- function(input, output, session) {
     
+    # read uploaded csv file into dataset
     data <- reactive({
         req(input$upload)
         
         ext <- tools::file_ext(input$upload$name)
         switch(ext,
                csv = vroom::vroom(input$upload$datapath, delim = ",", col_types = list(
-                   id = "c",
+                   id = "c", # make sure to read 'id' values as characters instead of numbers
                    sciname = "c",
                    genus = "c",
                    family = "c",
@@ -114,6 +126,12 @@ server <- function(input, output, session) {
         ) 
     })
     
+    # render data in the first tab's datatable 
+    output$fulldata <- DT::renderDT({
+        data()
+    })
+    
+    # create another dataset that has a column for the map popup's html
     popup <- reactive({
         data() %>% dplyr::mutate(popup_text = paste("<i>", sciname, "</i><br/>",
                                                     date, "<br/>",
@@ -121,6 +139,7 @@ server <- function(input, output, session) {
                                                     id))
     })
     
+    # create and render species discovery curve
     output$sdc <- renderPlot({
         df <- data()
         com <- data.frame(df$sciname)
@@ -143,15 +162,13 @@ server <- function(input, output, session) {
              main="Species Discovery Curve")
     })
     
-    output$fulldata <- DT::renderDT({
-        data()
-    })
-    
+    # create list of options for sidebar pickers
     ordernames <- reactive(unique(data()$order))
     familynames <- reactive(unique(data()$family))
     genusnames <- reactive(unique(data()$genus))
     speciesnames <- reactive(unique(data()$sciname))
     
+    # upon file upload, update pickers to reflect new options
     observeEvent(input$upload, {
         shinyWidgets::updatePickerInput(session, inputId = "order_select", label = "Order",
                                         choices = c(ordernames()),
@@ -167,8 +184,8 @@ server <- function(input, output, session) {
                                         options = pickerOptions(liveSearch = TRUE))
     })
     
+    # render interactive map with title depending on picker input
     displayed <- reactiveVal(" ")
-    
     output$rendermap <- renderUI({
         fluidRow(
             box(width = NULL, solidHeader = TRUE, status = "primary", title = displayed(),
@@ -176,6 +193,7 @@ server <- function(input, output, session) {
         )
     })
     
+    # upon picking order input, create and render leaflet map
     observeEvent(input$order_select, {
         displayed(input$order_select)
         output$occmap <- renderLeaflet({
@@ -209,6 +227,7 @@ server <- function(input, output, session) {
         })
     })
     
+    # upon picking family input, create and render leaflet map
     observeEvent(input$family_select, {
         displayed(input$family_select)
         output$occmap <- renderLeaflet({
@@ -242,6 +261,7 @@ server <- function(input, output, session) {
         })
     })
     
+    # upon picking genus input, create and render leaflet map
     observeEvent(input$genus_select, {
         displayed(input$genus_select)
         output$occmap <- renderLeaflet({
@@ -275,6 +295,7 @@ server <- function(input, output, session) {
         })
     })
     
+    # upon picking species input, create and render leaflet map
     observeEvent(input$species_select, {
         displayed(input$species_select)
         output$occmap <- renderLeaflet({
@@ -308,7 +329,7 @@ server <- function(input, output, session) {
         })
     })
     
-    # map's points change to show only selected species
+    # map's points change to show only selected orders
     observeEvent(input$order_select, {
         displayed(input$order_select)
             
@@ -335,6 +356,7 @@ server <- function(input, output, session) {
                              options = layersControlOptions(collapsed = FALSE))
     })
     
+    # map's points change to show only selected families
     observeEvent(input$family_select, {
         displayed(input$family_select)
             
@@ -361,6 +383,7 @@ server <- function(input, output, session) {
                              options = layersControlOptions(collapsed = FALSE))
     })
     
+    # map's points change to show only selected genus
     observeEvent(input$genus_select, {
         displayed(input$genus_select)
             
@@ -387,6 +410,7 @@ server <- function(input, output, session) {
                              options = layersControlOptions(collapsed = FALSE))
     })
     
+    # map's points change to show only selected species
     observeEvent(input$species_select, {
         displayed(input$species_select)
             
@@ -413,9 +437,7 @@ server <- function(input, output, session) {
                              options = layersControlOptions(collapsed = FALSE))
     })
     
-    
-    
-    # map's point change color to red when selected (clicked) and back to black when deselected
+    # change map's point color to red when selected (clicked) and back to black when deselected
     selected <- reactiveValues(groups = vector())
     proxy <- leafletProxy("occmap")
     
@@ -430,7 +452,7 @@ server <- function(input, output, session) {
         }
     })
     
-    # display and download csv of selected points
+    # render datatable of selected points
     output$selectedpoints <- DT::renderDT({
         DT::datatable(
             if(is.null(selected)) {
@@ -441,6 +463,7 @@ server <- function(input, output, session) {
         )
     })
     
+    # render data of selected points to be ready for download
     output$downloaddata <- downloadHandler(
         filename = "downloadeddata.csv",
         content = function(file) {
