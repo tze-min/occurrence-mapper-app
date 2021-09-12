@@ -24,7 +24,7 @@ library(shinydashboard)
 
 # dashboard app
 header <- dashboardHeader(
-    title = "Occurrence Visualiser"
+    title = "Occurrence Mapper"
 )
 
 sidebar <- dashboardSidebar(
@@ -114,18 +114,15 @@ server <- function(input, output, session) {
                    longitude = "?"
                )),
                validate("Invalid file type. Please upload a .csv file.")
-        ) %>% dplyr::mutate(popup_text = paste("<i>", sciname, "</i><br/>",
-                                               date, "<br/>",
-                                               "by", recorder, "<br/>",
-                                               id))
+        ) 
     })
     
-    # popup <- reactive({
-    #     data() %>% dplyr::mutate(popup_text = paste("<i>", sciname, "</i><br/>",
-    #                                                 date, "<br/>",
-    #                                                 "by", recorder, "<br/>",
-    #                                                 id))
-    # })
+    popup <- reactive({
+        data() %>% dplyr::mutate(popup_text = paste("<i>", sciname, "</i><br/>",
+                                                    date, "<br/>",
+                                                    "by", recorder, "<br/>",
+                                                    id))
+    })
     
     output$sdc <- renderPlot({
         df <- data()
@@ -174,13 +171,12 @@ server <- function(input, output, session) {
     })
     
     observeEvent(input$order_select, {
-        df <- data() %>% dplyr::filter(order == input$order_select)
         
         output$occmap <- renderLeaflet({
             if (is.null(data())) {
                 lf <-
                     leaflet() %>% 
-                    setView(lng = 103.8198, lat = 1.3521, zoom = 12) %>%
+                    setView(lng = 103.8198, lat = 1.3521, zoom = 11) %>%
                     addTiles(group = "Street") %>%
                     addProviderTiles(providers$Esri.WorldImagery, group = "Satellite") %>%
                     addProviderTiles(providers$CartoDB.Voyager, group = "Voyager") %>%
@@ -188,9 +184,10 @@ server <- function(input, output, session) {
                                      options = layersControlOptions(collapsed = FALSE))
                 return(lf)
             } else {
+                df <- popup() %>% dplyr::filter(order == input$order_select)
                 lf <- 
                     leaflet(data = df) %>%
-                    setView(lng = 103.8198, lat = 1.3521, zoom = 12) %>%
+                    setView(lng = 103.8198, lat = 1.3521, zoom = 11) %>%
                     addTiles(group = "Street") %>%
                     addProviderTiles(providers$Esri.WorldImagery, group = "Satellite") %>%
                     addProviderTiles(providers$CartoDB.Voyager, group = "Voyager") %>%
@@ -207,13 +204,12 @@ server <- function(input, output, session) {
     })
     
     observeEvent(input$family_select, {
-        df <- data() %>% dplyr::filter(family == input$family_select)
         
         output$occmap <- renderLeaflet({
             if (is.null(data())) {
                 lf <-
                     leaflet() %>% 
-                    setView(lng = 103.8198, lat = 1.3521, zoom = 12) %>%
+                    setView(lng = 103.8198, lat = 1.3521, zoom = 11) %>%
                     addTiles(group = "Street") %>%
                     addProviderTiles(providers$Esri.WorldImagery, group = "Satellite") %>%
                     addProviderTiles(providers$CartoDB.Voyager, group = "Voyager") %>%
@@ -221,9 +217,10 @@ server <- function(input, output, session) {
                                      options = layersControlOptions(collapsed = FALSE))
                 return(lf)
             } else {
+                df <- popup() %>% dplyr::filter(family == input$family_select)
                 lf <- 
                     leaflet(data = df) %>%
-                    setView(lng = 103.8198, lat = 1.3521, zoom = 12) %>%
+                    setView(lng = 103.8198, lat = 1.3521, zoom = 11) %>%
                     addTiles(group = "Street") %>%
                     addProviderTiles(providers$Esri.WorldImagery, group = "Satellite") %>%
                     addProviderTiles(providers$CartoDB.Voyager, group = "Voyager") %>%
@@ -240,13 +237,12 @@ server <- function(input, output, session) {
     })
     
     observeEvent(input$genus_select, {
-        df <- data() %>% dplyr::filter(genus == input$genus_select)
-        
+
         output$occmap <- renderLeaflet({
             if (is.null(data())) {
                 lf <-
                     leaflet() %>% 
-                    setView(lng = 103.8198, lat = 1.3521, zoom = 12) %>%
+                    setView(lng = 103.8198, lat = 1.3521, zoom = 11) %>%
                     addTiles(group = "Street") %>%
                     addProviderTiles(providers$Esri.WorldImagery, group = "Satellite") %>%
                     addProviderTiles(providers$CartoDB.Voyager, group = "Voyager") %>%
@@ -254,9 +250,10 @@ server <- function(input, output, session) {
                                      options = layersControlOptions(collapsed = FALSE))
                 return(lf)
             } else {
+                df <- popup() %>% dplyr::filter(genus == input$genus_select)
                 lf <- 
                     leaflet(data = df) %>%
-                    setView(lng = 103.8198, lat = 1.3521, zoom = 12) %>%
+                    setView(lng = 103.8198, lat = 1.3521, zoom = 11) %>%
                     addTiles(group = "Street") %>%
                     addProviderTiles(providers$Esri.WorldImagery, group = "Satellite") %>%
                     addProviderTiles(providers$CartoDB.Voyager, group = "Voyager") %>%
@@ -273,13 +270,12 @@ server <- function(input, output, session) {
     })
     
     observeEvent(input$species_select, {
-        df <- data() %>% dplyr::filter(sciname == input$species_select)
         
         output$occmap <- renderLeaflet({
             if (is.null(data())) {
                 lf <-
                     leaflet() %>% 
-                    setView(lng = 103.8198, lat = 1.3521, zoom = 12) %>%
+                    setView(lng = 103.8198, lat = 1.3521, zoom = 11) %>%
                     addTiles(group = "Street") %>%
                     addProviderTiles(providers$Esri.WorldImagery, group = "Satellite") %>%
                     addProviderTiles(providers$CartoDB.Voyager, group = "Voyager") %>%
@@ -287,9 +283,10 @@ server <- function(input, output, session) {
                                      options = layersControlOptions(collapsed = FALSE))
                 return(lf)
             } else {
+                df <- popup() %>% dplyr::filter(sciname == input$species_select)
                 lf <- 
                     leaflet(data = df) %>%
-                    setView(lng = 103.8198, lat = 1.3521, zoom = 12) %>%
+                    setView(lng = 103.8198, lat = 1.3521, zoom = 11) %>%
                     addTiles(group = "Street") %>%
                     addProviderTiles(providers$Esri.WorldImagery, group = "Satellite") %>%
                     addProviderTiles(providers$CartoDB.Voyager, group = "Voyager") %>%
@@ -308,7 +305,7 @@ server <- function(input, output, session) {
     # map's points change to show only selected species
     observeEvent(input$order_select, {
         leafletProxy("occmap") %>% clearMarkers()
-        df <- data() %>% dplyr::filter(order == input$order_select)
+        df <- popup() %>% dplyr::filter(order == input$order_select)
         index <- which(df$order == input$order_select)
         
         leafletProxy("occmap") %>%
@@ -332,7 +329,7 @@ server <- function(input, output, session) {
     
     observeEvent(input$family_select, {
         leafletProxy("occmap") %>% clearMarkers()
-        df <- data() %>% dplyr::filter(family == input$family_select)
+        df <- popup() %>% dplyr::filter(family == input$family_select)
         index <- which(df$family == input$family_select)
         
         leafletProxy("occmap") %>%
@@ -356,7 +353,7 @@ server <- function(input, output, session) {
     
     observeEvent(input$genus_select, {
         leafletProxy("occmap") %>% clearMarkers()
-        df <- data() %>% dplyr::filter(genus == input$genus_select)
+        df <- popup() %>% dplyr::filter(genus == input$genus_select)
         index <- which(df$genus == input$genus_select)
         
         leafletProxy("occmap") %>%
@@ -380,7 +377,7 @@ server <- function(input, output, session) {
     
     observeEvent(input$species_select, {
         leafletProxy("occmap") %>% clearMarkers()
-        df <- data() %>% dplyr::filter(sciname == input$species_select)
+        df <- popup() %>% dplyr::filter(sciname == input$species_select)
         index <- which(df$sciname == input$species_select)
         
         leafletProxy("occmap") %>%
