@@ -15,12 +15,12 @@ if(!require(vegan)) install.packages("vegan", repos = "http://cran.us.r-project.
 library(readxl)
 library(readr)
 library(tidyr)
-library(rgdal)      
-library(sf)
-library(shiny) 
-library(shinyWidgets)
-library(leaflet)
+library(shiny)
 library(shinydashboard)
+library(leaflet)
+library(rgdal)
+library(sf)
+library(vegan)
 
 # dashboard app
 header <- dashboardHeader(
@@ -70,10 +70,7 @@ body <- dashboardBody(
         
         tabItem(
             tabName = "map",
-            fluidRow(
-                box(width = NULL, solidHeader = TRUE, status = "primary", title = "Occurrence Map",
-                    leafletOutput("occmap", height = 520))
-            )
+            uiOutput("rendermap")
         ),
         
         tabItem(tabName = "selection",
@@ -170,8 +167,17 @@ server <- function(input, output, session) {
                                         options = pickerOptions(liveSearch = TRUE))
     })
     
+    displayed <- reactiveVal(" ")
+    
+    output$rendermap <- renderUI({
+        fluidRow(
+            box(width = NULL, solidHeader = TRUE, status = "primary", title = displayed(),
+                leafletOutput("occmap", height = 520))
+        )
+    })
+    
     observeEvent(input$order_select, {
-        
+        displayed(input$order_select)
         output$occmap <- renderLeaflet({
             if (is.null(data())) {
                 lf <-
@@ -204,7 +210,7 @@ server <- function(input, output, session) {
     })
     
     observeEvent(input$family_select, {
-        
+        displayed(input$family_select)
         output$occmap <- renderLeaflet({
             if (is.null(data())) {
                 lf <-
@@ -237,7 +243,7 @@ server <- function(input, output, session) {
     })
     
     observeEvent(input$genus_select, {
-
+        displayed(input$genus_select)
         output$occmap <- renderLeaflet({
             if (is.null(data())) {
                 lf <-
@@ -270,7 +276,7 @@ server <- function(input, output, session) {
     })
     
     observeEvent(input$species_select, {
-        
+        displayed(input$species_select)
         output$occmap <- renderLeaflet({
             if (is.null(data())) {
                 lf <-
@@ -304,6 +310,8 @@ server <- function(input, output, session) {
     
     # map's points change to show only selected species
     observeEvent(input$order_select, {
+        displayed(input$order_select)
+            
         leafletProxy("occmap") %>% clearMarkers()
         df <- popup() %>% dplyr::filter(order == input$order_select)
         index <- which(df$order == input$order_select)
@@ -328,6 +336,8 @@ server <- function(input, output, session) {
     })
     
     observeEvent(input$family_select, {
+        displayed(input$family_select)
+            
         leafletProxy("occmap") %>% clearMarkers()
         df <- popup() %>% dplyr::filter(family == input$family_select)
         index <- which(df$family == input$family_select)
@@ -352,6 +362,8 @@ server <- function(input, output, session) {
     })
     
     observeEvent(input$genus_select, {
+        displayed(input$genus_select)
+            
         leafletProxy("occmap") %>% clearMarkers()
         df <- popup() %>% dplyr::filter(genus == input$genus_select)
         index <- which(df$genus == input$genus_select)
@@ -376,6 +388,8 @@ server <- function(input, output, session) {
     })
     
     observeEvent(input$species_select, {
+        displayed(input$species_select)
+            
         leafletProxy("occmap") %>% clearMarkers()
         df <- popup() %>% dplyr::filter(sciname == input$species_select)
         index <- which(df$sciname == input$species_select)
