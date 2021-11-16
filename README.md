@@ -1,8 +1,10 @@
 # Occurrence Mapper
 
-This Shiny dashboard app accepts your occurrence data and returns its table view, statistical summaries and an interactive map. The pickers in the sidebar let you filter the occurrences displayed on the map, based on their scientific name, genus, family or order. You can select points on the map and view your selection in a table, as well as download it.
+Created for the Ecological Adaptations Lab at Yale-NUS College in 2021, this Shiny dashboard app accepts your occurrence data and returns its table view, statistical summaries and an interactive map. The pickers in the sidebar let you filter the occurrences displayed on the map, based on their scientific name, genus, family or order. You can select points on the map and view your selection in a table, as well as download it. 
 
-Created for the Ecological Adaptations Lab at Yale-NUS College in 2021.
+A screenshot of the expected user interface upon loading a dataset is as follows:
+
+![Screenshot of app interface](user-interface.png)
 
 ## SECTION 1. Project Structure
 
