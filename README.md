@@ -1,8 +1,8 @@
 # Occurrence Mapper
 
-The Shiny dashboard app accepts your occurrence data and returns its table view, statistical summaries and an interactive map. The pickers in the sidebar lets you filter the occurrences displayed on the map, based on their scientific name, genus, family or order. You can select points on the map and view your selection in a table, as well as download it.
+This Shiny dashboard app accepts your occurrence data and returns its table view, statistical summaries and an interactive map. The pickers in the sidebar let you filter the occurrences displayed on the map, based on their scientific name, genus, family or order. You can select points on the map and view your selection in a table, as well as download it.
 
-Created for the Ecological Adaptations Lab at Yale-NUS College.
+Created for the Ecological Adaptations Lab at Yale-NUS College in 2021.
 
 ## SECTION 1. Project Structure
 
@@ -19,7 +19,7 @@ occurrence-mapper
         clean-sentosa-observations-155147-formatted.csv
         IDL_database_28July20-formatted.csv
         template-dataset.csv
-	    raw.zip
+        raw.zip
 ```
 
 It comprises three major components. `app.R` contains code for the frontend (what components are available on the app) as well as the backend (data processing, interactivity). `styles.css` is a CSS file for additional control over the frontend's design. 
@@ -57,6 +57,6 @@ If you would like to work on this app further, you can refer to helpful tutorial
 ## SECTION 4. References and Useful Links
 
 - The inspiration for this app was Edward Parker's [COVID-19 Tracker](https://shiny.rstudio.com/gallery/covid19-tracker.html), whose code is available as a [GitHub repository](https://github.com/eparker12/nCoV_tracker).
-- RStudio's official guide to shinydashboard - especially their [Getting Started](http://rstudio.github.io/shinydashboard/get_started.html) and Structure pages - helps you understand how `app.R` is structured.
-- An [overview](https://shiny.rstudio.com/articles/reactivity-overview.html) of reactivity in Shiny helps you understand how the app's interactivity works, aka. the relationship between the ui and server functions within `app.R`. E.g. When you click on a point on the map, data received by a table in another tab is updated.
-- If you're interested in hosting the app on [shinyapps.io](https://www.shinyapps.io/), sign up for an account first and the site's dashboard contains instructions regarding how to connect your local app to the site, enabling access to the app via a URL instead.
+- RStudio's official guide to shinydashboard - especially their [Getting Started](http://rstudio.github.io/shinydashboard/get_started.html) and [Structure](http://rstudio.github.io/shinydashboard/structure.html) pages - helps you understand how `app.R` is structured.
+- An [overview](https://shiny.rstudio.com/articles/reactivity-overview.html) of reactivity in Shiny helps you understand how the app's interactivity works, aka. the relationship between the ui and server functions within `app.R`. E.g. When you click on a point on the map, how is the data received by a table in another tab updated?
+- If you're interested in hosting the app on [shinyapps.io](https://www.shinyapps.io/), sign up for an account first and the site's dashboard will contain instructions regarding how to connect your local app to the site, enabling access to the app via a URL instead.
