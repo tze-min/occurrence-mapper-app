@@ -39,7 +39,7 @@ sidebar <- dashboardSidebar(
         # navigation menu
         menuItem("Map", tabName = "map"),
         menuItem("Selected Data", tabName = "selection"),
-        menuItem("Statistics", tabName = "statistics"),
+        menuItem("Dashboard", tabName = "dashboard"),
         menuItem("Original Data", tabName = "dataset"),
         menuItem("About", tabName = "about"),
         
@@ -52,34 +52,7 @@ sidebar <- dashboardSidebar(
 body <- dashboardBody(
     tabItems(
         
-        # first tab's content: unedited datatable
-        tabItem(tabName = "dataset",
-                fluidRow(
-                    column(width = 12,
-                           DT::dataTableOutput("fulldata"),
-                           style = "height: 800px; overflow-y: scroll; overflow-x: scroll;")
-                )),
-        
-        # second tab's content: bar charts + species discovery curve
-        tabItem(
-            tabName = "statistics",
-            fluidRow(
-                box(solidHeader = TRUE, width = 3, # count of observations, species, etc.
-                    DT::dataTableOutput("basic")),
-                box(solidHeader = TRUE, width = 5, # species discovery curve
-                    plotOutput("sdc", height = 303)),
-                box(solidHeader = TRUE, width = 4, # count of missing data
-                    DT::dataTableOutput("missing")),
-                
-
-                box(solidHeader = TRUE, width = 12, # taxonomic breakdown by orders and families
-                    plotOutput("taxo", height = 500)),
-                box(solidHeader = TRUE, width = 12, # bar chart of recorders, no. of observations submitted, and year of submission
-                    plotOutput("rec", height = 500))
-            )
-        ),
-        
-        # third tab's content: interactive map
+        # first tab's content: interactive map
         tabItem(
             tabName = "map",
             div(class = "outer",
@@ -87,7 +60,6 @@ body <- dashboardBody(
                 leafletOutput("occmap", height = "100%", width = "100%")),
             tags$head(includeCSS("styles.css")),
             absolutePanel(id = "controls", 
-                          #bottom = 140, right = 55, width = 250, 
                           fixed = TRUE,
                           draggable = TRUE, height = "auto",
                           
@@ -103,13 +75,39 @@ body <- dashboardBody(
             uiOutput("maptitle")
         ),
         
-        # fourth tab's content: datatable of selected points
+        # second tab's content: datatable of selected points
         tabItem(tabName = "selection",
                 downloadButton("downloaddata", "Download as CSV"),
                 tags$br(), tags$br(),
                 fluidRow(
                     column(width = 12,
                            DT::DTOutput("selectedpoints"),
+                           style = "height: 800px; overflow-y: scroll; overflow-x: scroll;")
+                )),
+        
+        # third tab's content: summary tables + bar charts + species discovery curve
+        tabItem(
+            tabName = "dashboard",
+            fluidRow(
+                box(solidHeader = TRUE, width = 3, # count of observations, species, etc.
+                    DT::dataTableOutput("basic")),
+                box(solidHeader = TRUE, width = 5, # species discovery curve
+                    plotOutput("sdc", height = 303)),
+                box(solidHeader = TRUE, width = 4, # count of missing data
+                    DT::dataTableOutput("missing")),
+
+                box(solidHeader = TRUE, width = 12, # taxonomic breakdown by orders and families
+                    plotOutput("taxo", height = 500)),
+                box(solidHeader = TRUE, width = 12, # bar chart of recorders, no. of observations submitted, and year of submission
+                    plotOutput("rec", height = 500))
+            )
+        ),
+        
+        # fourth tab's content: original datatable
+        tabItem(tabName = "dataset",
+                fluidRow(
+                    column(width = 12,
+                           DT::dataTableOutput("fulldata"),
                            style = "height: 800px; overflow-y: scroll; overflow-x: scroll;")
                 )),
         
@@ -183,10 +181,12 @@ server <- function(input, output, session) {
     
     # create another dataset that has a column for the map popup's html
     popup <- reactive({
-        data() %>% dplyr::mutate(popup_text = paste("<i>", sciname, "</i><br/>",
-                                                    date, "<br/>",
-                                                    "by", recorder, "<br/>",
-                                                    id))
+        data() %>% 
+            dplyr::mutate(popup_text = paste("<i>", sciname, "</i><br/>", 
+                                             date, "<br/>",
+                                             "by", recorder, "<br/>",
+                                             id)) %>%
+            replace_na(list(sciname = "Not Available", genus = "Not Available", family = "Not Available", order = "Not Available"))
     })
     
     # create and render basic descriptive values
@@ -314,21 +314,21 @@ server <- function(input, output, session) {
     })
     
     # create list of options for sidebar pickers
-    ordernames <- reactive(unique(data()$order))
-    familynames <- reactive(unique(data()$family))
-    genusnames <- reactive(unique(data()$genus))
-    speciesnames <- reactive(unique(data()$sciname))
+    ordernames <- reactive(unique(popup()$order))
+    familynames <- reactive(unique(popup()$family))
+    genusnames <- reactive(unique(popup()$genus))
+    speciesnames <- reactive(unique(popup()$sciname))
     
     # display empty map when no data has been uploaded
-    output$occmap <- renderLeaflet({
-        leaflet() %>% 
-            setView(lng = 103.8198, lat = 1.3521, zoom = 11) %>%
-            addTiles(group = "Street") %>%
-            addProviderTiles(providers$Esri.WorldImagery, group = "Satellite") %>%
-            addProviderTiles(providers$CartoDB.Voyager, group = "Voyager") %>%
-            addLayersControl(baseGroups = c("Voyager", "Street", "Satellite"),
-                             options = layersControlOptions(collapsed = FALSE))
-    }) 
+    # output$occmap <- renderLeaflet({
+    #     leaflet() %>% 
+    #         setView(lng = 103.8198, lat = 1.3521, zoom = 11) %>%
+    #         addTiles(group = "Street") %>%
+    #         addProviderTiles(providers$Esri.WorldImagery, group = "Satellite") %>%
+    #         addProviderTiles(providers$CartoDB.Voyager, group = "Voyager") %>%
+    #         addLayersControl(baseGroups = c("Voyager", "Street", "Satellite"),
+    #                          options = layersControlOptions(collapsed = FALSE))
+    # }) 
     
     # upon file upload, update pickers to reflect new options
     observeEvent(input$upload, {
@@ -366,20 +366,21 @@ server <- function(input, output, session) {
     
     # upon picking order input, create and render leaflet map
     observeEvent(input$order_select, {
-        displayed(input$order_select)
+        inp <- input$order_select
+        displayed(inp)
+        
+        #inp <- replace(inp, inp == "NA", NA)
         output$occmap <- renderLeaflet({
-            # if (is.null(data())) {
-            #     lf <-
-            #         leaflet() %>% 
-            #         setView(lng = 103.8198, lat = 1.3521, zoom = 11) %>%
-            #         addTiles(group = "Street") %>%
-            #         addProviderTiles(providers$Esri.WorldImagery, group = "Satellite") %>%
-            #         addProviderTiles(providers$CartoDB.Voyager, group = "Voyager") %>%
-            #         addLayersControl(baseGroups = c("Voyager", "Street", "Satellite"),
-            #                          options = layersControlOptions(collapsed = FALSE))
-            #     return(lf)
-            # } else {
-                df <- popup() %>% dplyr::filter(order %in% input$order_select)
+            if (is.null(inp)) {
+                leaflet() %>%
+                setView(lng = 103.8198, lat = 1.3521, zoom = 11) %>%
+                addTiles(group = "Street") %>%
+                addProviderTiles(providers$Esri.WorldImagery, group = "Satellite") %>%
+                addProviderTiles(providers$CartoDB.Voyager, group = "Voyager") %>%
+                addLayersControl(baseGroups = c("Voyager", "Street", "Satellite"),
+                                 options = layersControlOptions(collapsed = FALSE))
+            } else {
+                df <- popup() %>% dplyr::filter(order %in% inp)
                 leaflet(data = df) %>%
                 setView(lng = 103.8198, lat = 1.3521, zoom = 11) %>%
                 addTiles(group = "Street") %>%
@@ -392,9 +393,9 @@ server <- function(input, output, session) {
                                  fillOpacity = 1, fillColor = "black") %>%
                 addLayersControl(baseGroups = c("Voyager", "Street", "Satellite"),
                                  options = layersControlOptions(collapsed = FALSE))
-            #}
+            }
         })
-    })
+    }, ignoreNULL = FALSE)
     
     # upon picking family input, create and render leaflet map
     observeEvent(input$family_select, {
@@ -423,41 +424,41 @@ server <- function(input, output, session) {
                     addLayersControl(baseGroups = c("Voyager", "Street", "Satellite"),
                                      options = layersControlOptions(collapsed = FALSE))
             }
-            # if (is.null(data())) {
-            #     lf <-
-            #         leaflet() %>% 
-            #         setView(lng = 103.8198, lat = 1.3521, zoom = 11) %>%
-            #         addTiles(group = "Street") %>%
-            #         addProviderTiles(providers$Esri.WorldImagery, group = "Satellite") %>%
-            #         addProviderTiles(providers$CartoDB.Voyager, group = "Voyager") %>%
-            #         addLayersControl(baseGroups = c("Voyager", "Street", "Satellite"),
-            #                          options = layersControlOptions(collapsed = FALSE))
-            #     return(lf)
-            # } else {
-            # df <- popup() %>% dplyr::filter(family %in% input$family_select) ##### when deselected, df -> NULL####
-            # leaflet(data = df) %>%
-            #     setView(lng = 103.8198, lat = 1.3521, zoom = 11) %>%
-            #     addTiles(group = "Street") %>%
-            #     addProviderTiles(providers$Esri.WorldImagery, group = "Satellite") %>%
-            #     addProviderTiles(providers$CartoDB.Voyager, group = "Voyager") %>%
-            #     addCircleMarkers(data = df,
-            #                      ~longitude, ~latitude,
-            #                      label = lapply(df$popup_text, htmltools::HTML),
-            #                      radius = 4.2, stroke = TRUE, color = "white", weight = .5, opacity = 1,
-            #                      fillOpacity = 1, fillColor = "black") %>%
-            #     addLayersControl(baseGroups = c("Voyager", "Street", "Satellite"),
-            #                      options = layersControlOptions(collapsed = FALSE))
-            # }
+            if (is.null(data())) {
+                lf <-
+                    leaflet() %>%
+                    setView(lng = 103.8198, lat = 1.3521, zoom = 11) %>%
+                    addTiles(group = "Street") %>%
+                    addProviderTiles(providers$Esri.WorldImagery, group = "Satellite") %>%
+                    addProviderTiles(providers$CartoDB.Voyager, group = "Voyager") %>%
+                    addLayersControl(baseGroups = c("Voyager", "Street", "Satellite"),
+                                     options = layersControlOptions(collapsed = FALSE))
+                return(lf)
+            } else {
+            df <- popup() %>% dplyr::filter(family %in% input$family_select) ##### when deselected, df -> NULL####
+            leaflet(data = df) %>%
+                setView(lng = 103.8198, lat = 1.3521, zoom = 11) %>%
+                addTiles(group = "Street") %>%
+                addProviderTiles(providers$Esri.WorldImagery, group = "Satellite") %>%
+                addProviderTiles(providers$CartoDB.Voyager, group = "Voyager") %>%
+                addCircleMarkers(data = df,
+                                 ~longitude, ~latitude,
+                                 label = lapply(df$popup_text, htmltools::HTML),
+                                 radius = 4.2, stroke = TRUE, color = "white", weight = .5, opacity = 1,
+                                 fillOpacity = 1, fillColor = "black") %>%
+                addLayersControl(baseGroups = c("Voyager", "Street", "Satellite"),
+                                 options = layersControlOptions(collapsed = FALSE))
+            }
         })
-    }, ignoreNULL = FALSE)
-    
+    })
+
     # upon picking genus input, create and render leaflet map
     observeEvent(input$genus_select, {
         displayed(input$genus_select)
         output$occmap <- renderLeaflet({
             # if (is.null(data())) {
             #     lf <-
-            #         leaflet() %>% 
+            #         leaflet() %>%
             #         setView(lng = 103.8198, lat = 1.3521, zoom = 11) %>%
             #         addTiles(group = "Street") %>%
             #         addProviderTiles(providers$Esri.WorldImagery, group = "Satellite") %>%
@@ -482,14 +483,14 @@ server <- function(input, output, session) {
             # }
         })
     })
-    
+
     # upon picking species input, create and render leaflet map
     observeEvent(input$species_select, {
         displayed(input$species_select)
         output$occmap <- renderLeaflet({
             # if (is.null(data())) {
             #     lf <-
-            #         leaflet() %>% 
+            #         leaflet() %>%
             #         setView(lng = 103.8198, lat = 1.3521, zoom = 11) %>%
             #         addTiles(group = "Street") %>%
             #         addProviderTiles(providers$Esri.WorldImagery, group = "Satellite") %>%
@@ -514,15 +515,15 @@ server <- function(input, output, session) {
             # }
         })
     })
-    
+
     # map's points change to show only selected orders
     observeEvent(input$order_select, {
         displayed(input$order_select)
-            
+
         leafletProxy("occmap") %>% clearMarkers()
         df <- popup() %>% dplyr::filter(order %in% input$order_select)
         index <- which(df$order %in% input$order_select)
-        
+
         leafletProxy("occmap") %>%
             addCircleMarkers(data = df,
                              lng = df$longitude[index], lat = df$latitude[index],
@@ -541,15 +542,15 @@ server <- function(input, output, session) {
             addLayersControl(baseGroups = c("Voyager", "Street", "Satellite"),
                              options = layersControlOptions(collapsed = FALSE))
     })
-    
+
     # map's points change to show only selected families
     observeEvent(input$family_select, {
         displayed(input$family_select)
-            
+
         leafletProxy("occmap") %>% clearMarkers()
         df <- popup() %>% dplyr::filter(family %in% input$family_select)
         index <- which(df$family %in% input$family_select)
-        
+
         leafletProxy("occmap") %>%
             addCircleMarkers(data = df,
                              lng = df$longitude[index], lat = df$latitude[index],
@@ -568,15 +569,15 @@ server <- function(input, output, session) {
             addLayersControl(baseGroups = c("Voyager", "Street", "Satellite"),
                              options = layersControlOptions(collapsed = FALSE))
     })
-    
+
     # map's points change to show only selected genus
     observeEvent(input$genus_select, {
         displayed(input$genus_select)
-            
+
         leafletProxy("occmap") %>% clearMarkers()
         df <- popup() %>% dplyr::filter(genus %in% input$genus_select)
         index <- which(df$genus %in% input$genus_select)
-        
+
         leafletProxy("occmap") %>%
             addCircleMarkers(data = df,
                              lng = df$longitude[index], lat = df$latitude[index],
@@ -595,15 +596,15 @@ server <- function(input, output, session) {
             addLayersControl(baseGroups = c("Voyager", "Street", "Satellite"),
                              options = layersControlOptions(collapsed = FALSE))
     })
-    
+
     # map's points change to show only selected species
     observeEvent(input$species_select, {
         displayed(input$species_select)
-            
+
         leafletProxy("occmap") %>% clearMarkers()
         df <- popup() %>% dplyr::filter(sciname %in% input$species_select)
         index <- which(df$sciname %in% input$species_select)
-        
+
         leafletProxy("occmap") %>%
             addCircleMarkers(data = df,
                              lng = df$longitude[index], lat = df$latitude[index],
@@ -622,11 +623,11 @@ server <- function(input, output, session) {
             addLayersControl(baseGroups = c("Voyager", "Street", "Satellite"),
                              options = layersControlOptions(collapsed = FALSE))
     })
-    
+
     # change map's point color to red when selected (clicked) and back to black when deselected
     selected <- reactiveValues(groups = vector())
     proxy <- leafletProxy("occmap")
-    
+
     observeEvent(input$occmap_marker_click, {
         click <- input$occmap_marker_click
         if(click$group == "unselected") { ####### check this #############
