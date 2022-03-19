@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	
+	<title>Occurrence Mapper  | How this project came about</title>
+	<meta name="viewport" content="width=device-width,minimum-scale=1">
+	<meta name="generator" content="Hugo 0.94.2" />
+	
+	
+	<META NAME="ROBOTS" CONTENT="INDEX, FOLLOW">
+	
+
+	
+	
+	<link href="/tze-min/occurrence-mapper-app/dist/app.css" rel="stylesheet">
+	
+
+	
+
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+
+
+
+<link rel="stylesheet" href='https://github.com/tze-min/occurrence-mapper-app/lib/katex.min.css' crossorigin="anonymous">
+
+
+<script defer src='https://github.com/tze-min/occurrence-mapper-app/lib/katex.min.js' crossorigin="anonymous"></script>
+
+
+<script defer src='https://github.com/tze-min/occurrence-mapper-app/lib/contrib/auto-render.min.js'
+crossorigin="anonymous"
+onload='renderMathInElement(document.body);'></script>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement(document.body, {
+            delimiters: [
+                {left: "$$", right: "$$", display: true},
+                {left: "$", right: "$", display: false}
+            ]
+        });
+    });
+</script>
+
+	
+	
+	
+	<script>
+		(function (u, c) {
+			var d = document,
+				t = 'script',
+				o = d.createElement(t),
+				s = d.getElementsByTagName(t)[0];
+			o.src = u;
+			if (c) {
+				o.addEventListener('load', function (e) {
+					c(e);
+				});
+			}
+			s.parentNode.insertBefore(o, s);
+		})('https:\/\/github.com\/tze-min\/occurrence-mapper-app\/lib\/pangu.min.js', function () {
+			pangu.spacingPage();
+		});
+	</script>
+	
+	
+	
+	<style type="text/css" media="screen, print">
+		@font-face {
+			font-family: "FancyTitleFont";
+			font-style: normal;
+			font-display: swap;
+			src: url('https://github.com/tze-min/occurrence-mapper-app/fonts/exampleFont.woff2') format('woff2'),
+				url('https://github.com/tze-min/occurrence-mapper-app/fonts/exampleFont.woff') format('woff');
+		}
+		 
+		  
+		 
+		@font-face {
+			font-family: 'Noto Serif CJK SC';
+			font-style: normal;
+			font-weight: 300;
+			font-display: swap;
+			src: local('Noto Serif CJK SC Light'), local('NotoSerifCJK-Light'),
+				url('https://github.com/tze-min/occurrence-mapper-app/fonts/noto-serif-sc-v7-latin_chinese-simplified-300.woff2') format('woff2'),
+				 
+				url('https://github.com/tze-min/occurrence-mapper-app/fonts/noto-serif-sc-v7-latin_chinese-simplified-300.woff') format('woff');
+			 
+		}
+
+		 
+		@font-face {
+			font-family: 'Noto Serif CJK SC';
+			font-style: normal;
+			font-weight: 400;
+			font-display: swap;
+			src: local('Noto Serif CJK SC'), local('NotoSerifCJK-Regular'),
+				url('https://github.com/tze-min/occurrence-mapper-app/fonts/noto-serif-sc-v7-latin_chinese-simplified-regular.woff2') format('woff2'),
+				 
+				url('https://github.com/tze-min/occurrence-mapper-app/fonts/noto-serif-sc-v7-latin_chinese-simplified-regular.woff') format('woff');
+			 
+		}
+
+		 
+		@font-face {
+			font-family: 'Noto Serif CJK SC';
+			font-style: normal;
+			font-weight: 500;
+			font-display: swap;
+			src: local('Noto Serif CJK SC Medium'), local('NotoSerifCJK-Medium'),
+				url('https://github.com/tze-min/occurrence-mapper-app/fonts/noto-serif-sc-v7-latin_chinese-simplified-500.woff2') format('woff2'),
+				 
+				url('https://github.com/tze-min/occurrence-mapper-app/fonts/noto-serif-sc-v7-latin_chinese-simplified-500.woff') format('woff');
+			 
+		}
+	</style>
+	
+</head>
+
+<body class="bg-gray-100 text-gray-700 font-sans">
+	<div class="p-6 sm:p-10 md:p-16 flex flex-wrap">
+		<header class="w-full md:w-2/5 xl:w-1/2 md:pr-12 lg:pr-20 xl:pr-24 order-1 md:order-1 max-w-2xl">
+			<div
+				class="z-50 bg-gray-100 bg-opacity-75 bg-opacity-custom lg:min-w-0.7 max-w-xl md:float-right md:text-right leading-loose tracking-tight md:sticky md:top-0 pt-2">
+				
+<div>
+	<h2>
+		<a href="https://github.com/tze-min/occurrence-mapper-app" title="Occurrence Mapper" class="heading font-cursive icon">Occurrence Mapper</a>
+	</h2>
+</div>
+<h1 class="pt-2">How this project came about</h1>
+
+<h3 class="text-java-700 font-normal leading-relaxed pt-2">and why I&#39;m working on it again</h3>
+
+<div class="flex flex-wrap justify-end pt-2 "><div class="md:flex-grow-0 font-light">
+	
+	
+	
+	
+	<a class="post-taxonomy-category text-medium-red-violet-600 hover:text-medium-red-violet-400"
+		href='/tze-min/occurrence-mapper-app/categories/meta'>meta</a>
+	
+	
+	
+
+	
+	&nbsp;&nbsp;
+	
+
+	
+	
+	
+	
+	<a class="post-taxonomy-tag text-eucalyptus-500"
+		href='/tze-min/occurrence-mapper-app/tags/goals'>goals</a>&nbsp;&#47;
+	
+	<a class="post-taxonomy-tag text-eucalyptus-500"
+		href='/tze-min/occurrence-mapper-app/tags/ideas'>ideas</a>
+	
+	
+	
+</div><time class="text-eucalyptus-500 md:text-right md:flex-grow font-light pl-4"
+		datetime="2022-03-18T18:33:02&#43;08:00">18 Mar 2022</time>
+</div>
+
+<hr />
+
+
+			</div>
+		</header>
+		<main role="main" class="w-full md:w-3/5 xl:w-1/2 max-w-3xl order-2 md:order-2 min-h-70vh pt-2 pb-4">
+			
+
+<article>
+	<section class="mx-auto content">
+		<div class="c-rich-text"><h1 id="origin">Origin</h1>
+<p>A research lab I interned for in 2021 wanted to study the distribution of insect species in Singapore, given some occurrence datasets.<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup></p>
+<p>Originally, I wrote a script to create interactive maps, because I wasn&rsquo;t happy with static ones. Displaying the occurrence data of more than one species, genus, or other higher levels of taxonomy complicated the maps; we couldn&rsquo;t tell the difference between the data points of multiple taxonomy groups. And manually generating a map per group? No.</p>
+<p>But <code>Leaflet</code>, an R package for developing interactive maps, let me do fun things like toggle between species, produce tooltips with additional information about each data point by hovering over it, and zoom into exactly what sort of habitat a specific organism was observed at.</p>
+<p>However, I&rsquo;d also been asked to visualise other fields the data had. Who were the top recorders over time? Which families and orders of species had the greatest number of observations? And what about the dataset itself: how many missing values? How much more data &ndash; i.e. recording observations via field trips &ndash; do we need to collect before we can say, &ldquo;Okay, this dataset fairly represents the species available in this area of study?&rdquo;</p>
+<p>So I proposed this dashboard app written in <code>Shiny</code> that provides both interactive maps and summary statistics, and because prior to that I&rsquo;ve never coded out an app (by my lonesome) in my life, proceeded to spend the rest of my internship working on it.</p>
+<h1 id="why-work-on-it-again">Why work on it again?</h1>
+<p>I&rsquo;ve interning elsewhere now, six months later, worlds away from academia and biodiversity labs. But I look back at the time I spent exploring packages and studying how reactivity worked in <code>Shiny</code> and worrying hair ends about why the pickers on my maps weren&rsquo;t working the exact way I wanted them to &ndash; I thought:</p>
+<ol>
+<li>Wow I had fun!</li>
+<li>I can still make a lot of improvements &ndash; and test out ideas</li>
+</ol>
+<p>I don&rsquo;t necessarily <em>have</em> to look at wildlife within Singapore. Databases like GBIF exist out there that I&rsquo;ve barely touched, and I want to see what insights they can give me. What have people been doing with species occurrence data? Surely more than putting them into maps. And plotting individual points like these in the app works well when the data displayed per species is sparse, but what about when there&rsquo;s plenty? What about when you want to bring in environmental factors &ndash; how could that look and fit into an app?</p>
+<p>Not to mention the bugs. And making the app&rsquo;s features more convenient, if not for others, then at least for myself. One of the biggest things I took away from my internship at the lab was to take pride in my own work, and yeah, sometimes I wonder if building a dashboard app is something others in my faculty (computing) find simple, but I still remember the process of doing so, of learning through encountering bug by frustrating bug, of watching the product of your work fill out, take shape.</p>
+<p>I&rsquo;d like to keep a long-term project of experiencing this again.</p>
+<h1 id="my-long-term-goals">My long-term goals</h1>
+<h2 id="1-test-out-my-ideas">1. Test out my ideas</h2>
+<p>I&rsquo;ve been brainstorming them <a href="https://github.com/tze-min/occurrence-mapper-app/projects/1">here</a>, and will probably continue doing so. I&rsquo;d consider this a success if I&rsquo;ve given at least each item in the kanban board a go.</p>
+<h2 id="2-practice-blogging-and-documenting">2. Practice blogging and documenting</h2>
+<p>Because how else am I going to remember what I&rsquo;ve done? Besides, I like writing. I&rsquo;ve just never done it publicly for a coding project before. (I also like biodiversity and the environment. Intersecting writing x programming x environmental studies for a career or a hobby would literally be the biggest win.)</p>
+<p>I&rsquo;d consider this goal a success if I can turn to my previous posts to recall what I&rsquo;ve learned, say, another six months down the road. No need to be too consistent with posting since I need to prioritise my other commitments, but I want my posts over time to be a reflection of how I&rsquo;ve grown.</p>
+<h2 id="so-two-big-things">So, two big things</h2>
+<p>&hellip;that I&rsquo;m aiming for. But in setting up this project site and writing this post, I&rsquo;ve already tested out a couple of ideas, learned more about GitHub Pages and how hosting Hugo sites work, and started my blogging practice. That&rsquo;s more than where I&rsquo;d been at before.</p>
+<section class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1" role="doc-endnote">
+<p>We can think of occurrence data as rows of observations of organisms, each with the organism&rsquo;s scientific name, coordinates and datetime the recorder observed it, at the very least.&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</section>
+</div>
+	</section>
+
+
+</article>
+
+		</main>
+		<div class="w-full h-0 flex-none order-3"></div>
+		<aside role="contentinfo"
+			class="w-full md:w-2/5 xl:w-1/2 md:pr-12 lg:pr-20 xl:pr-24 order-4 md:order-3 md:sticky md:bottom-0 self-end max-w-2xl">
+			<div class="md:float-right md:text-right leading-loose tracking-tight md:mb-2">
+				
+	<div class="md:max-w-xs  flex flex-col md:items-end">
+	<ul class="font-serif flex-grow-0 flex justify-between flex-wrap md:flex-col">
+	
+	
+	<li class="px-1 md:px-0">
+		<a href="/tze-min/occurrence-mapper-app/posts/" title="Posts page" 
+			class="font-medium text-medium-red-violet-600 hover:text-medium-red-violet-400" >
+			Posts
+		</a>
+	</li>
+	
+	<li class="px-1 md:px-0">
+		<a href="/tze-min/occurrence-mapper-app/categories/" title="Categories page" >
+			Categories
+		</a>
+	</li>
+	
+	<li class="px-1 md:px-0">
+		<a href="/tze-min/occurrence-mapper-app/tags/" title="Tags page" >
+			Tags
+		</a>
+	</li>
+	
+	
+	
+	
+</ul>
+	
+
+<div class="flex flex-wrap-reverse md:justify-end content-end md:content-start justify-start items-start   max-h-16">
+	
+	<a href='http://github.com/tze-min/occurrence-mapper-app' target="_blank" class="github icon pl-1 text-eucalyptus-400 hover:text-java-400" title="github link" rel="noopener"
+		aria-label="follow on github——Opens in a new window">
+		
+		<div class="fill-current h-8 w-8">
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <g>
+        <path fill="none" d="M0 0h24v24H0z"/>
+        <path fill-rule="nonzero" d="M5.883 18.653c-.3-.2-.558-.455-.86-.816a50.32 50.32 0 0 1-.466-.579c-.463-.575-.755-.84-1.057-.949a1 1 0 0 1 .676-1.883c.752.27 1.261.735 1.947 1.588-.094-.117.34.427.433.539.19.227.33.365.44.438.204.137.587.196 1.15.14.023-.382.094-.753.202-1.095C5.38 15.31 3.7 13.396 3.7 9.64c0-1.24.37-2.356 1.058-3.292-.218-.894-.185-1.975.302-3.192a1 1 0 0 1 .63-.582c.081-.024.127-.035.208-.047.803-.123 1.937.17 3.415 1.096A11.731 11.731 0 0 1 12 3.315c.912 0 1.818.104 2.684.308 1.477-.933 2.613-1.226 3.422-1.096.085.013.157.03.218.05a1 1 0 0 1 .616.58c.487 1.216.52 2.297.302 3.19.691.936 1.058 2.045 1.058 3.293 0 3.757-1.674 5.665-4.642 6.392.125.415.19.879.19 1.38a300.492 300.492 0 0 1-.012 2.716 1 1 0 0 1-.019 1.958c-1.139.228-1.983-.532-1.983-1.525l.002-.446.005-.705c.005-.708.007-1.338.007-1.998 0-.697-.183-1.152-.425-1.36-.661-.57-.326-1.655.54-1.752 2.967-.333 4.337-1.482 4.337-4.66 0-.955-.312-1.744-.913-2.404a1 1 0 0 1-.19-1.045c.166-.414.237-.957.096-1.614l-.01.003c-.491.139-1.11.44-1.858.949a1 1 0 0 1-.833.135A9.626 9.626 0 0 0 12 5.315c-.89 0-1.772.119-2.592.35a1 1 0 0 1-.83-.134c-.752-.507-1.374-.807-1.868-.947-.144.653-.073 1.194.092 1.607a1 1 0 0 1-.189 1.045C6.016 7.89 5.7 8.694 5.7 9.64c0 3.172 1.371 4.328 4.322 4.66.865.097 1.201 1.177.544 1.748-.192.168-.429.732-.429 1.364v3.15c0 .986-.835 1.725-1.96 1.528a1 1 0 0 1-.04-1.962v-.99c-.91.061-1.662-.088-2.254-.485z"/>
+    </g>
+</svg>
+
+		</div>
+	</a>
+	
+	<a href='http://linkedin.com/koaytzemin' target="_blank" class="linkedin icon pl-1 text-eucalyptus-400 hover:text-java-400" title="linkedin link" rel="noopener"
+		aria-label="follow on linkedin——Opens in a new window">
+		
+		<div class="fill-current h-8 w-8">
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <g>
+        <path fill="none" d="M0 0h24v24H0z"/>
+        <path d="M12 9.55C12.917 8.613 14.111 8 15.5 8a5.5 5.5 0 0 1 5.5 5.5V21h-2v-7.5a3.5 3.5 0 0 0-7 0V21h-2V8.5h2v1.05zM5 6.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm-1 2h2V21H4V8.5z"/>
+    </g>
+</svg>
+
+		</div>
+	</a>
+	
+</div>
+	<div class="text-sm text-gray-500 leading-tight a-gray">
+		Copyright © 2022
+		<br />
+		Built with Hugo and theme <a href="https://github.com/heyeshuang/hugo-theme-tokiwa">Tokiwa</a>. 745 words in this page.
+	</div>
+</div>
+
+			</div>
+		</aside>
+		<footer class="w-full md:w-3/5 xl:w-1/2 order-3 max-w-3xl md:order-4 pt-2">
+			
+<hr class="double-line" />
+<div class="flex flex-wrap justify-between pb-2 leading-loose font-serif">
+    
+    
+</div>
+<div >
+
+
+
+</div>
+<hr />
+<div class="pb-2">
+    
+</div>
+<hr />
+
+		</footer>
+		
+
+<script src="/tze-min/occurrence-mapper-app/dist/app.js"></script>
+
+
+	</div>
+</body>
+
+</html>
