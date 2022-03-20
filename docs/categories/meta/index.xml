@@ -7,10 +7,59 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Copyright © 2022</copyright>
-    <lastBuildDate>Fri, 18 Mar 2022 18:33:02 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 20 Mar 2022 09:00:43 +0800</lastBuildDate>
     
 	<atom:link href="https://tze-min.github.io/occurrence-mapper-app/categories/meta/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Deploying to GitHub Pages was an adventure</title>
+      <link>https://tze-min.github.io/occurrence-mapper-app/posts/deploying-to-gh-pages-was-an-adventure/</link>
+      <pubDate>Sun, 20 Mar 2022 09:00:43 +0800</pubDate>
+      
+      <guid>https://tze-min.github.io/occurrence-mapper-app/posts/deploying-to-gh-pages-was-an-adventure/</guid>
+      <description>&lt;h1 id=&#34;preamble&#34;&gt;Preamble&lt;/h1&gt;
+&lt;p&gt;I knew little about static site generators going in, and so thought myself a genius the first time I ran a Hugo site&amp;hellip; locally. (I take wins no matter their size.) But because I didn&amp;rsquo;t really know what I was doing except for the all-encompassing desire have a project-centric blog up and running, I ran into a lot of errors in my attempts to try out things.&lt;/p&gt;
+&lt;p&gt;The source of these errors came from inexperience with web development, and interestingly, how much knowledge is assumed by others when they explain or write technical guides on what you want to know. So I&amp;rsquo;m writing this post to detail what I tried, the problems I ran into, as well what else I want to do &amp;ndash; so I can look back at it next time and remember where I started from, the sorts of misonceptions, assumptions and knowledge gaps I had.&lt;/p&gt;
+&lt;h1 id=&#34;adventure&#34;&gt;Adventure&lt;/h1&gt;
+&lt;p&gt;I had a couple of overarching goals:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Primary goal&lt;/strong&gt;: Create a blog for this Occurrence Mapper project.
+&lt;strong&gt;Secondary goal&lt;/strong&gt;: Learn more about static site generators.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;I just didn&amp;rsquo;t know how they were supposed to happen, not yet. But through some Googling, I did narrow them down to something more precise. Or more accurately, a path to achieve them:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;How I&amp;rsquo;ll achieve my overarching goals&lt;/strong&gt;: Create a static website using Hugo and deploy it to the GitHub Pages associated with the GitHub repository of my Occurrence Mapper project, by using the &lt;code&gt;master/doc&lt;/code&gt; branch of my project repository as my website&amp;rsquo;s publishing source.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;There were definitely many alternatives. But since it&amp;rsquo;s my first ever blog that isn&amp;rsquo;t WordPress, I didn&amp;rsquo;t need to stress too much about decisions like what site generator I ought to use. Jekyll, Hugo, Gatsby &amp;ndash; a learning curve existed all the same. I heard the most about the first two, so I looked up Jekyll&amp;rsquo;s official documentation, specifically their &lt;a href=&#34;https://jekyllrb.com/docs/step-by-step/01-setup/&#34;&gt;Step by Step Tutorial&lt;/a&gt;, and read:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Jekyll is a Ruby gem.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;I went, &amp;ldquo;A gem what?&amp;rdquo; and looked up Hugo instead.&lt;/p&gt;
+&lt;p&gt;Hugo&amp;rsquo;s &lt;a href=&#34;https://gohugo.io/getting-started/installing/&#34;&gt;installation&lt;/a&gt; documentation is friendlier because the writers assumed the reader&amp;rsquo;s cluelessness &amp;ndash; they even had different instructions depending on your technical level. How considerate is that? From then on, the &lt;a href=&#34;https://gohugo.io/getting-started/quick-start&#34;&gt;Quick Start&lt;/a&gt; guide laid down a straight path towards starting the Hugo server and looking at your site by visiting &lt;code&gt;http://localhost:1313&lt;/code&gt;. Though I did have some fun redoing the steps upon realizing the site themes I liked required the extended version of Hugo.&lt;/p&gt;
+&lt;p&gt;Then, I screwed up.&lt;/p&gt;
+&lt;p&gt;The last step, after watching your site show up in localhost, is to actually &lt;em&gt;build&lt;/em&gt; the static pages. To call &lt;code&gt;hugo -D&lt;/code&gt; in your command prompt/terminal, to create the html and json files that would actually display the pages of your website itself.&lt;/p&gt;
+&lt;p&gt;Not realising &amp;ndash; and at a deeper level, not understanding &amp;ndash; this sent me on a wild goose chase trying to figure out what the tutorials I found online were saying. It included trying out things like:&lt;/p&gt;
+&lt;p&gt;Assuming the Hugo site folder (i.e. the &lt;code&gt;config.toml&lt;/code&gt; file, themes, content, resources folders, etc. &amp;ndash; those generated when you ran &lt;code&gt;hugo new site [mywebsite]&lt;/code&gt;) ought to go into a folder called &lt;code&gt;docs&lt;/code&gt; of your project repository. And committing all that into my project repository. Yikes.&lt;/p&gt;
+&lt;p&gt;Adding &lt;code&gt;publishDir = &#39;docs&#39;&lt;/code&gt; to the &lt;code&gt;config.toml&lt;/code&gt; file and wondering what on earth that was supposed to achieve.&lt;/p&gt;
+&lt;p&gt;Wondering why when accessing this website&amp;rsquo;s URL led to 404 Not Found, which horrified me. And why inspecting the webpage&amp;rsquo;s console gave me errors, variations of &lt;code&gt;Access to xxx from origin yyy has been blocked by CORS policy: No &#39;Access-Control-Allow-Origin&#39; header is present on the requested resource&lt;/code&gt;, which horrified me just a tad more. But I did learn what a CORS error meant, which contributed to my eventual realization regarding where I&amp;rsquo;d gone wrong.&lt;/p&gt;
+&lt;p&gt;Looking around for &lt;code&gt;index.html&lt;/code&gt; files among my site development files that the Internet told me were vital to any website and that also didn&amp;rsquo;t exist in my directory. Of course they didn&amp;rsquo;t. I hadn&amp;rsquo;t run the command to generate them.&lt;/p&gt;
+&lt;p&gt;Alas, returning to and noticing the final line of Hugo&amp;rsquo;s Quick Start tutorial saved me from another half a day&amp;rsquo;s work. I moved my Hugo website folder out of &lt;code&gt;docs&lt;/code&gt;, ran &lt;code&gt;hugo&lt;/code&gt; with anticipation, and copied over the static files into aforementioned &lt;code&gt;docs&lt;/code&gt;, committed and pushed the changes, and gawked at my first ever static site available, prettily, on github.io.&lt;/p&gt;
+&lt;h1 id=&#34;summary-and-what-else-i-intend-to-try&#34;&gt;Summary and what else I intend to try&lt;/h1&gt;
+&lt;p&gt;This probably could&amp;rsquo;ve been avoided if I&amp;rsquo;d just examined the documentation carefully. At the same time though, it wasn&amp;rsquo;t as if it were the first time I&amp;rsquo;d come across that command. I&amp;rsquo;d seen it at times, on other tutorials, but I hadn&amp;rsquo;t understood what that meant or what I was meant to do with the files that got published by it. But hey, I know it now, and more importantly &amp;ndash; I achieved my primary and secondary goals using the roadmap I set out.&lt;/p&gt;
+&lt;p&gt;Regarding what else I intend to do:&lt;/p&gt;
+&lt;p&gt;I hear GitHub Actions is the way to go for removing the manual need to copy-paste your generated static files into the docs folder every single time. I&amp;rsquo;ve started reading up on it and it looks exciting.&lt;/p&gt;
+&lt;p&gt;Figuring out where the folder for your Hugo site supposed to go is also on the list. Within this Occurrence Mapper project repository? In a new repository?&lt;/p&gt;
+&lt;p&gt;For future sites hosted on GitHub Pages, try using the &lt;code&gt;gh-pages&lt;/code&gt; branch, an alternative to placing your static files in docs. Might look into Jekyll, too, since that&amp;rsquo;s what GitHub Pages is built on. I&amp;rsquo;d just like to have a more confident grasp of the workflow of deploying Hugo sites to GitHub Pages first. Perhaps only after, I&amp;rsquo;d look into tweaking the script of the themes I use, using other site generators, or trying out other hosting platforms.&lt;/p&gt;
+&lt;p&gt;The first two tasks are pretty clear-cut. I&amp;rsquo;ll determine them as complete once I&amp;rsquo;ve gotten sufficient knowledge to do up an overview of the steps of this aforementioned workflow &amp;ndash; whether as a diagram or via writing &amp;ndash; in a blog post. I noticed a lot of the official documentation and online tutorials I&amp;rsquo;ve come across about this tend to&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Assume the reader&amp;rsquo;s prior knowledge (e.g. how a website works), which isn&amp;rsquo;t the friendliest writing.&lt;/li&gt;
+&lt;li&gt;Break up the website creation and deployment in parts, instead of taking the reader from beginning (e.g. downloading Hugo) to end (e.g. GitHub Actions).&lt;/li&gt;
+&lt;li&gt;Focus on deploying sites for user&amp;rsquo;s or organisation&amp;rsquo;s GitHub Pages instead of for projects, and also focus on sites built with Jekyll.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;I&amp;rsquo;d like to make something I can return to or send to my less technical friends as references should they ever wish to do this, too.&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>How this project came about</title>

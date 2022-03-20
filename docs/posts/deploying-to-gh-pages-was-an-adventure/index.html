@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	
-	<title>Occurrence Mapper  | How this project came about</title>
+	<title>Occurrence Mapper  | Deploying to GitHub Pages was an adventure</title>
 	<meta name="viewport" content="width=device-width,minimum-scale=1">
 	<meta name="generator" content="Hugo 0.94.2" />
 	
@@ -141,9 +141,9 @@ onload='renderMathInElement(document.body);'></script>
 		<a href="https://tze-min.github.io/occurrence-mapper-app" title="Occurrence Mapper" class="heading font-cursive icon">Occurrence Mapper</a>
 	</h2>
 </div>
-<h1 class="pt-2">How this project came about</h1>
+<h1 class="pt-2">Deploying to GitHub Pages was an adventure</h1>
 
-<h3 class="text-java-700 font-normal leading-relaxed pt-2">and why I&#39;m working on it again</h3>
+<h3 class="text-java-700 font-normal leading-relaxed pt-2">with mistakes and misconceptions, but it worked out!</h3>
 
 <div class="flex flex-wrap justify-end pt-2 "><div class="md:flex-grow-0 font-light">
 	
@@ -168,12 +168,15 @@ onload='renderMathInElement(document.body);'></script>
 	
 	
 	<a class="post-taxonomy-tag text-eucalyptus-500"
-		href='/occurrence-mapper-app/tags/ideas'>ideas</a>
+		href='/occurrence-mapper-app/tags/github-pages'>github pages</a>&nbsp;&#47;
+	
+	<a class="post-taxonomy-tag text-eucalyptus-500"
+		href='/occurrence-mapper-app/tags/hugo'>hugo</a>
 	
 	
 	
 </div><time class="text-eucalyptus-500 md:text-right md:flex-grow font-light pl-4"
-		datetime="2022-03-18T18:33:02&#43;08:00">18 Mar 2022</time>
+		datetime="2022-03-20T09:00:43&#43;08:00">20 Mar 2022</time>
 </div>
 
 <hr />
@@ -186,37 +189,46 @@ onload='renderMathInElement(document.body);'></script>
 
 <article>
 	<section class="mx-auto content">
-		<div class="c-rich-text"><h1 id="origin">Origin</h1>
-<p>A research lab I interned for in 2021 wanted to study the distribution of insect species in Singapore, given some occurrence datasets.<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup></p>
-<p>Originally, I wrote a script to create interactive maps, because I wasn&rsquo;t happy with static ones. Displaying the occurrence data of more than one species, genus, or other higher levels of taxonomy complicated the maps; we couldn&rsquo;t tell the difference between the data points of multiple taxonomy groups. And manually generating a map per group? No.</p>
-<p>But <code>Leaflet</code>, an R package for developing interactive maps, let me do fun things like toggle between species, produce tooltips with additional information about each data point by hovering over it, and zoom into exactly what sort of habitat a specific organism was observed at.</p>
-<p>However, I&rsquo;d also been asked to visualise other fields the data had. Who were the top recorders over time? Which families and orders of species had the greatest number of observations? And what about the dataset itself: how many missing values? How much more data &ndash; i.e. recording observations via field trips &ndash; do we need to collect before we can say, &ldquo;Okay, this dataset fairly represents the species available in this area of study?&rdquo;</p>
-<p>So I proposed this dashboard app written in <code>Shiny</code> that provides both interactive maps and summary statistics, and because prior to that I&rsquo;ve never coded out an app (by my lonesome) in my life, proceeded to spend the rest of my internship working on it.</p>
-<h1 id="why-work-on-it-again">Why work on it again?</h1>
-<p>I&rsquo;ve interning elsewhere now, six months later, worlds away from academia and biodiversity labs. But I look back at the time I spent exploring packages and studying how reactivity worked in <code>Shiny</code> and worrying hair ends about why the pickers on my maps weren&rsquo;t working the exact way I wanted them to &ndash; I thought:</p>
+		<div class="c-rich-text"><h1 id="preamble">Preamble</h1>
+<p>I knew little about static site generators going in, and so thought myself a genius the first time I ran a Hugo site&hellip; locally. (I take wins no matter their size.) But because I didn&rsquo;t really know what I was doing except for the all-encompassing desire have a project-centric blog up and running, I ran into a lot of errors in my attempts to try out things.</p>
+<p>The source of these errors came from inexperience with web development, and interestingly, how much knowledge is assumed by others when they explain or write technical guides on what you want to know. So I&rsquo;m writing this post to detail what I tried, the problems I ran into, as well what else I want to do &ndash; so I can look back at it next time and remember where I started from, the sorts of misonceptions, assumptions and knowledge gaps I had.</p>
+<h1 id="adventure">Adventure</h1>
+<p>I had a couple of overarching goals:</p>
+<blockquote>
+<p><strong>Primary goal</strong>: Create a blog for this Occurrence Mapper project.
+<strong>Secondary goal</strong>: Learn more about static site generators.</p>
+</blockquote>
+<p>I just didn&rsquo;t know how they were supposed to happen, not yet. But through some Googling, I did narrow them down to something more precise. Or more accurately, a path to achieve them:</p>
+<blockquote>
+<p><strong>How I&rsquo;ll achieve my overarching goals</strong>: Create a static website using Hugo and deploy it to the GitHub Pages associated with the GitHub repository of my Occurrence Mapper project, by using the <code>master/doc</code> branch of my project repository as my website&rsquo;s publishing source.</p>
+</blockquote>
+<p>There were definitely many alternatives. But since it&rsquo;s my first ever blog that isn&rsquo;t WordPress, I didn&rsquo;t need to stress too much about decisions like what site generator I ought to use. Jekyll, Hugo, Gatsby &ndash; a learning curve existed all the same. I heard the most about the first two, so I looked up Jekyll&rsquo;s official documentation, specifically their <a href="https://jekyllrb.com/docs/step-by-step/01-setup/">Step by Step Tutorial</a>, and read:</p>
+<blockquote>
+<p>Jekyll is a Ruby gem.</p>
+</blockquote>
+<p>I went, &ldquo;A gem what?&rdquo; and looked up Hugo instead.</p>
+<p>Hugo&rsquo;s <a href="https://gohugo.io/getting-started/installing/">installation</a> documentation is friendlier because the writers assumed the reader&rsquo;s cluelessness &ndash; they even had different instructions depending on your technical level. How considerate is that? From then on, the <a href="https://gohugo.io/getting-started/quick-start">Quick Start</a> guide laid down a straight path towards starting the Hugo server and looking at your site by visiting <code>http://localhost:1313</code>. Though I did have some fun redoing the steps upon realizing the site themes I liked required the extended version of Hugo.</p>
+<p>Then, I screwed up.</p>
+<p>The last step, after watching your site show up in localhost, is to actually <em>build</em> the static pages. To call <code>hugo -D</code> in your command prompt/terminal, to create the html and json files that would actually display the pages of your website itself.</p>
+<p>Not realising &ndash; and at a deeper level, not understanding &ndash; this sent me on a wild goose chase trying to figure out what the tutorials I found online were saying. It included trying out things like:</p>
+<p>Assuming the Hugo site folder (i.e. the <code>config.toml</code> file, themes, content, resources folders, etc. &ndash; those generated when you ran <code>hugo new site [mywebsite]</code>) ought to go into a folder called <code>docs</code> of your project repository. And committing all that into my project repository. Yikes.</p>
+<p>Adding <code>publishDir = 'docs'</code> to the <code>config.toml</code> file and wondering what on earth that was supposed to achieve.</p>
+<p>Wondering why when accessing this website&rsquo;s URL led to 404 Not Found, which horrified me. And why inspecting the webpage&rsquo;s console gave me errors, variations of <code>Access to xxx from origin yyy has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource</code>, which horrified me just a tad more. But I did learn what a CORS error meant, which contributed to my eventual realization regarding where I&rsquo;d gone wrong.</p>
+<p>Looking around for <code>index.html</code> files among my site development files that the Internet told me were vital to any website and that also didn&rsquo;t exist in my directory. Of course they didn&rsquo;t. I hadn&rsquo;t run the command to generate them.</p>
+<p>Alas, returning to and noticing the final line of Hugo&rsquo;s Quick Start tutorial saved me from another half a day&rsquo;s work. I moved my Hugo website folder out of <code>docs</code>, ran <code>hugo</code> with anticipation, and copied over the static files into aforementioned <code>docs</code>, committed and pushed the changes, and gawked at my first ever static site available, prettily, on github.io.</p>
+<h1 id="summary-and-what-else-i-intend-to-try">Summary and what else I intend to try</h1>
+<p>This probably could&rsquo;ve been avoided if I&rsquo;d just examined the documentation carefully. At the same time though, it wasn&rsquo;t as if it were the first time I&rsquo;d come across that command. I&rsquo;d seen it at times, on other tutorials, but I hadn&rsquo;t understood what that meant or what I was meant to do with the files that got published by it. But hey, I know it now, and more importantly &ndash; I achieved my primary and secondary goals using the roadmap I set out.</p>
+<p>Regarding what else I intend to do:</p>
+<p>I hear GitHub Actions is the way to go for removing the manual need to copy-paste your generated static files into the docs folder every single time. I&rsquo;ve started reading up on it and it looks exciting.</p>
+<p>Figuring out where the folder for your Hugo site supposed to go is also on the list. Within this Occurrence Mapper project repository? In a new repository?</p>
+<p>For future sites hosted on GitHub Pages, try using the <code>gh-pages</code> branch, an alternative to placing your static files in docs. Might look into Jekyll, too, since that&rsquo;s what GitHub Pages is built on. I&rsquo;d just like to have a more confident grasp of the workflow of deploying Hugo sites to GitHub Pages first. Perhaps only after, I&rsquo;d look into tweaking the script of the themes I use, using other site generators, or trying out other hosting platforms.</p>
+<p>The first two tasks are pretty clear-cut. I&rsquo;ll determine them as complete once I&rsquo;ve gotten sufficient knowledge to do up an overview of the steps of this aforementioned workflow &ndash; whether as a diagram or via writing &ndash; in a blog post. I noticed a lot of the official documentation and online tutorials I&rsquo;ve come across about this tend to</p>
 <ol>
-<li>Wow I had fun!</li>
-<li>I can still make a lot of improvements &ndash; and test out ideas</li>
+<li>Assume the reader&rsquo;s prior knowledge (e.g. how a website works), which isn&rsquo;t the friendliest writing.</li>
+<li>Break up the website creation and deployment in parts, instead of taking the reader from beginning (e.g. downloading Hugo) to end (e.g. GitHub Actions).</li>
+<li>Focus on deploying sites for user&rsquo;s or organisation&rsquo;s GitHub Pages instead of for projects, and also focus on sites built with Jekyll.</li>
 </ol>
-<p>I don&rsquo;t necessarily <em>have</em> to look at wildlife within Singapore. Databases like GBIF exist out there that I&rsquo;ve barely touched, and I want to see what insights they can give me. What have people been doing with species occurrence data? Surely more than putting them into maps. And plotting individual points like these in the app works well when the data displayed per species is sparse, but what about when there&rsquo;s plenty? What about when you want to bring in environmental factors &ndash; how could that look and fit into an app?</p>
-<p>Not to mention the bugs. And making the app&rsquo;s features more convenient, if not for others, then at least for myself. One of the biggest things I took away from my internship at the lab was to take pride in my own work, and yeah, sometimes I wonder if building a dashboard app is something others in my faculty (computing) find simple, but I still remember the process of doing so, of learning through encountering bug by frustrating bug, of watching the product of your work fill out, take shape.</p>
-<p>I&rsquo;d like to keep a long-term project of experiencing this again.</p>
-<h1 id="my-long-term-goals">My long-term goals</h1>
-<h2 id="1-test-out-my-ideas">1. Test out my ideas</h2>
-<p>I&rsquo;ve been brainstorming them <a href="https://github.com/tze-min/occurrence-mapper-app/projects/1">here</a>, and will probably continue doing so. I&rsquo;d consider this a success if I&rsquo;ve given at least each item in the kanban board a go.</p>
-<h2 id="2-practice-blogging-and-documenting">2. Practice blogging and documenting</h2>
-<p>Because how else am I going to remember what I&rsquo;ve done? Besides, I like writing. I&rsquo;ve just never done it publicly for a coding project before. (I also like biodiversity and the environment. Intersecting writing x programming x environmental studies for a career or a hobby would literally be the biggest win.)</p>
-<p>I&rsquo;d consider this goal a success if I can turn to my previous posts to recall what I&rsquo;ve learned, say, another six months down the road. No need to be too consistent with posting since I need to prioritise my other commitments, but I want my posts over time to be a reflection of how I&rsquo;ve grown.</p>
-<h2 id="so-two-big-things">So, two big things</h2>
-<p>&hellip;that I&rsquo;m aiming for. But in setting up this project site and writing this post, I&rsquo;ve already tested out a couple of ideas, learned more about GitHub Pages and how hosting Hugo sites work, and started my blogging practice. That&rsquo;s more than where I&rsquo;d been at before.</p>
-<section class="footnotes" role="doc-endnotes">
-<hr>
-<ol>
-<li id="fn:1" role="doc-endnote">
-<p>We can think of occurrence data as rows of observations of organisms, each with the organism&rsquo;s scientific name, coordinates and datetime the recorder observed it, at the very least.&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
-</li>
-</ol>
-</section>
+<p>I&rsquo;d like to make something I can return to or send to my less technical friends as references should they ever wish to do this, too.</p>
 </div>
 	</section>
 
@@ -292,7 +304,7 @@ onload='renderMathInElement(document.body);'></script>
 	<div class="text-sm text-gray-500 leading-tight a-gray">
 		Copyright © 2022
 		<br />
-		Built with Hugo and theme <a href="https://github.com/heyeshuang/hugo-theme-tokiwa">Tokiwa</a>. 745 words in this page.
+		Built with Hugo and theme <a href="https://github.com/heyeshuang/hugo-theme-tokiwa">Tokiwa</a>. 1116 words in this page.
 	</div>
 </div>
 
@@ -303,9 +315,17 @@ onload='renderMathInElement(document.body);'></script>
 <hr class="double-line" />
 <div class="flex flex-wrap justify-between pb-2 leading-loose font-serif">
     
+    <a class="flex-grow-0" href="/occurrence-mapper-app/posts/how-this-project-came-about/">
+        <svg class="fill-current inline-block h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24"
+            height="24">
+            <path fill="none" d="M0 0h24v24H0z" />
+            <path d="M7.828 11H20v2H7.828l5.364 5.364-1.414 1.414L4 12l7.778-7.778 1.414 1.414z" /></svg>
+        How this project came about
+    </a>
     
-    <a class="flex-grow-0" href="/occurrence-mapper-app/posts/deploying-to-gh-pages-was-an-adventure/">
-        Deploying to GitHub Pages was an adventure
+    
+    <a class="flex-grow-0" href="/occurrence-mapper-app/posts/hugo-to-gh-pages-hosting/">
+        Hugo to Gh Pages Hosting
         <svg class="fill-current inline-block h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24"
             height="24">
             <path fill="none" d="M0 0h24v24H0z" />

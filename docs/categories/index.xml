@@ -7,15 +7,33 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Copyright © 2022</copyright>
-    <lastBuildDate>Fri, 18 Mar 2022 18:33:02 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 21 Mar 2022 00:35:59 +0800</lastBuildDate>
     
 	<atom:link href="https://tze-min.github.io/occurrence-mapper-app/categories/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>notes</title>
+      <link>https://tze-min.github.io/occurrence-mapper-app/categories/notes/</link>
+      <pubDate>Mon, 21 Mar 2022 00:35:59 +0800</pubDate>
+      
+      <guid>https://tze-min.github.io/occurrence-mapper-app/categories/notes/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>goals</title>
+      <link>https://tze-min.github.io/occurrence-mapper-app/categories/goals/</link>
+      <pubDate>Sun, 20 Mar 2022 09:00:43 +0800</pubDate>
+      
+      <guid>https://tze-min.github.io/occurrence-mapper-app/categories/goals/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>meta</title>
       <link>https://tze-min.github.io/occurrence-mapper-app/categories/meta/</link>
-      <pubDate>Fri, 18 Mar 2022 18:33:02 +0800</pubDate>
+      <pubDate>Sun, 20 Mar 2022 09:00:43 +0800</pubDate>
       
       <guid>https://tze-min.github.io/occurrence-mapper-app/categories/meta/</guid>
       <description></description>

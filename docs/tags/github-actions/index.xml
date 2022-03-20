@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>github actions on Occurrence Mapper</title>
+    <link>https://tze-min.github.io/occurrence-mapper-app/tags/github-actions/</link>
+    <description>Recent content in github actions on Occurrence Mapper</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Copyright © 2022</copyright>
+    <lastBuildDate>Mon, 21 Mar 2022 00:35:59 +0800</lastBuildDate>
+    
+	<atom:link href="https://tze-min.github.io/occurrence-mapper-app/tags/github-actions/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Hugo to Gh Pages Hosting</title>
+      <link>https://tze-min.github.io/occurrence-mapper-app/posts/hugo-to-gh-pages-hosting/</link>
+      <pubDate>Mon, 21 Mar 2022 00:35:59 +0800</pubDate>
+      
+      <guid>https://tze-min.github.io/occurrence-mapper-app/posts/hugo-to-gh-pages-hosting/</guid>
+      <description>&lt;h1 id=&#34;setting-expectations&#34;&gt;Setting expectations&lt;/h1&gt;
+&lt;p&gt;Many static site generators exist, alongside types of hosting platforms and ways to host your site on even one platform. For clarity, I&amp;rsquo;m spelling out the broader aim of this guide:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Broader goal&lt;/strong&gt;: Create a blog for my Occurrence Mapper project.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;How&amp;rsquo;s that going to happen? Well, that&amp;rsquo;s the precise, technical aim of this guide:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;How we&amp;rsquo;ll achieve our broader goal&lt;/strong&gt;: Create a Hugo website and deploy it to the GitHub Pages associated with the GitHub repository of my Occurrence Mapper project, by using the &lt;code&gt;master/doc&lt;/code&gt; branch of my project repository as my website&amp;rsquo;s publishing source.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Going &amp;ldquo;What?&amp;rdquo; was my experience reading the official documentation and online tutorials about setting up my humble blog. Their authors tend to assume you know things. This guide will also assume you know things, but they&amp;rsquo;re things I&amp;rsquo;ll spell out:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;You know what Git is&lt;/li&gt;
+&lt;li&gt;You have a project on a GitHub repository that you want a Hugo site for&lt;/li&gt;
+&lt;li&gt;You&amp;rsquo;ve read the installation guide for Hugo and have installed it into whichever directory you fancy in your computer&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;a-guide&#34;&gt;A guide&lt;/h1&gt;
+&lt;ol&gt;
+&lt;li&gt;install hugo&lt;/li&gt;
+&lt;li&gt;create a separate repository for the static site, different from your original project&amp;rsquo;s repository&lt;/li&gt;
+&lt;li&gt;run the site locally on localhost:1313/occurrence-mapper-app&lt;/li&gt;
+&lt;li&gt;build the static files, which should show up in &lt;code&gt;public&lt;/code&gt; folder&lt;/li&gt;
+&lt;li&gt;copy the static files to a folder called &lt;code&gt;docs&lt;/code&gt; at the original project&lt;/li&gt;
+&lt;li&gt;go to settings on your github repository for your original project and set the relevant publishing source for Pages&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
