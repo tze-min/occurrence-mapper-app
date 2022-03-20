@@ -2,22 +2,22 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>ideas on Occurrence Mapper</title>
-    <link>https://github.com/tze-min/occurrence-mapper-app/tags/ideas/</link>
+    <link>https://tze-min.github.io/occurrence-mapper-app/tags/ideas/</link>
     <description>Recent content in ideas on Occurrence Mapper</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Copyright © 2022</copyright>
     <lastBuildDate>Fri, 18 Mar 2022 18:33:02 +0800</lastBuildDate>
     
-	<atom:link href="https://github.com/tze-min/occurrence-mapper-app/tags/ideas/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://tze-min.github.io/occurrence-mapper-app/tags/ideas/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>How this project came about</title>
-      <link>https://github.com/tze-min/occurrence-mapper-app/posts/how-this-project-came-about/</link>
+      <link>https://tze-min.github.io/occurrence-mapper-app/posts/how-this-project-came-about/</link>
       <pubDate>Fri, 18 Mar 2022 18:33:02 +0800</pubDate>
       
-      <guid>https://github.com/tze-min/occurrence-mapper-app/posts/how-this-project-came-about/</guid>
+      <guid>https://tze-min.github.io/occurrence-mapper-app/posts/how-this-project-came-about/</guid>
       <description>&lt;h1 id=&#34;origin&#34;&gt;Origin&lt;/h1&gt;
 &lt;p&gt;A research lab I interned for in 2021 wanted to study the distribution of insect species in Singapore, given some occurrence datasets.&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
 &lt;p&gt;Originally, I wrote a script to create interactive maps, because I wasn&amp;rsquo;t happy with static ones. Displaying the occurrence data of more than one species, genus, or other higher levels of taxonomy complicated the maps; we couldn&amp;rsquo;t tell the difference between the data points of multiple taxonomy groups. And manually generating a map per group? No.&lt;/p&gt;
