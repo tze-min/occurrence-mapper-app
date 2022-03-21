@@ -151,7 +151,7 @@ onload='renderMathInElement(document.body);'></script>
 	
 	
 	<a class="post-taxonomy-category text-medium-red-violet-600 hover:text-medium-red-violet-400"
-		href='/occurrence-mapper-app/categories/meta'>meta</a>&nbsp;&#47;
+		href='/occurrence-mapper-app/categories/deployment'>deployment</a>&nbsp;&#47;
 	
 	<a class="post-taxonomy-category text-medium-red-violet-600 hover:text-medium-red-violet-400"
 		href='/occurrence-mapper-app/categories/goals'>goals</a>
@@ -195,8 +195,8 @@ onload='renderMathInElement(document.body);'></script>
 <h1 id="adventure">Adventure</h1>
 <p>I had a couple of overarching goals:</p>
 <blockquote>
-<p><strong>Primary goal</strong>: Create a blog for this Occurrence Mapper project.
-<strong>Secondary goal</strong>: Learn more about static site generators.</p>
+<p><strong>Primary goal</strong>: Create a blog for this Occurrence Mapper project.</p>
+<p><strong>Secondary goal</strong>: Learn more about static site generators.</p>
 </blockquote>
 <p>I just didn&rsquo;t know how they were supposed to happen, not yet. But through some Googling, I did narrow them down to something more precise. Or more accurately, a path to achieve them:</p>
 <blockquote>
@@ -212,10 +212,10 @@ onload='renderMathInElement(document.body);'></script>
 <p>The last step, after watching your site show up in localhost, is to actually <em>build</em> the static pages. To call <code>hugo -D</code> in your command prompt/terminal, to create the html and json files that would actually display the pages of your website itself.</p>
 <p>Not realising &ndash; and at a deeper level, not understanding &ndash; this sent me on a wild goose chase trying to figure out what the tutorials I found online were saying. It included trying out things like:</p>
 <p>Assuming the Hugo site folder (i.e. the <code>config.toml</code> file, themes, content, resources folders, etc. &ndash; those generated when you ran <code>hugo new site [mywebsite]</code>) ought to go into a folder called <code>docs</code> of your project repository. And committing all that into my project repository. Yikes.</p>
-<p>Adding <code>publishDir = 'docs'</code> to the <code>config.toml</code> file and wondering what on earth that was supposed to achieve.</p>
-<p>Wondering why when accessing this website&rsquo;s URL led to 404 Not Found, which horrified me. And why inspecting the webpage&rsquo;s console gave me errors, variations of <code>Access to xxx from origin yyy has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource</code>, which horrified me just a tad more. But I did learn what a CORS error meant, which contributed to my eventual realization regarding where I&rsquo;d gone wrong.</p>
+<p>Adding <code>publishDir = 'docs'</code> to the <code>config.toml</code> file because that supposedly changed the publishing directory to <code>docs</code> (and it did; it created a new directory called <code>docs</code> except not in <code>masters</code>) and so I wondered what on earth that was supposed to achieve.</p>
+<p>Wondering why accessing this website&rsquo;s URL led to 404 Not Found, which horrified me. And why inspecting the webpage&rsquo;s console gave me errors, variations of <code>Access to xxx from origin yyy has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource</code>, which horrified me just a tad more. But I did learn what a CORS error meant, which contributed to my eventual realization regarding where I&rsquo;d gone wrong.</p>
 <p>Looking around for <code>index.html</code> files among my site development files that the Internet told me were vital to any website and that also didn&rsquo;t exist in my directory. Of course they didn&rsquo;t. I hadn&rsquo;t run the command to generate them.</p>
-<p>Alas, returning to and noticing the final line of Hugo&rsquo;s Quick Start tutorial saved me from another half a day&rsquo;s work. I moved my Hugo website folder out of <code>docs</code>, ran <code>hugo</code> with anticipation, and copied over the static files into aforementioned <code>docs</code>, committed and pushed the changes, and gawked at my first ever static site available, prettily, on github.io.</p>
+<p>Alas, returning to and noticing the final line of Hugo&rsquo;s Quick Start tutorial saved me from another half a day&rsquo;s work. I moved my Hugo website folder out of <code>docs</code>, ran <code>hugo</code> with anticipation, and copied over the static files into the aforementioned <code>docs</code>, committed and pushed the changes, and gawked at my first ever static site available, prettily, on github.io.</p>
 <h1 id="summary-and-what-else-i-intend-to-try">Summary and what else I intend to try</h1>
 <p>This probably could&rsquo;ve been avoided if I&rsquo;d just examined the documentation carefully. At the same time though, it wasn&rsquo;t as if it were the first time I&rsquo;d come across that command. I&rsquo;d seen it at times, on other tutorials, but I hadn&rsquo;t understood what that meant or what I was meant to do with the files that got published by it. But hey, I know it now, and more importantly &ndash; I achieved my primary and secondary goals using the roadmap I set out.</p>
 <p>Regarding what else I intend to do:</p>
@@ -226,7 +226,7 @@ onload='renderMathInElement(document.body);'></script>
 <ol>
 <li>Assume the reader&rsquo;s prior knowledge (e.g. how a website works), which isn&rsquo;t the friendliest writing.</li>
 <li>Break up the website creation and deployment in parts, instead of taking the reader from beginning (e.g. downloading Hugo) to end (e.g. GitHub Actions).</li>
-<li>Focus on deploying sites for user&rsquo;s or organisation&rsquo;s GitHub Pages instead of for projects, and also focus on sites built with Jekyll.</li>
+<li>Focus on deploying sites for a user&rsquo;s or organisation&rsquo;s GitHub Pages instead of for project repositories, and also focus on sites built with Jekyll.</li>
 </ol>
 <p>I&rsquo;d like to make something I can return to or send to my less technical friends as references should they ever wish to do this, too.</p>
 </div>
@@ -304,7 +304,7 @@ onload='renderMathInElement(document.body);'></script>
 	<div class="text-sm text-gray-500 leading-tight a-gray">
 		Copyright © 2022
 		<br />
-		Built with Hugo and theme <a href="https://github.com/heyeshuang/hugo-theme-tokiwa">Tokiwa</a>. 1116 words in this page.
+		Built with Hugo and theme <a href="https://github.com/heyeshuang/hugo-theme-tokiwa">Tokiwa</a>. 1143 words in this page.
 	</div>
 </div>
 
